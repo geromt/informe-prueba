@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { LinearChart } from './components/LinearChart'
 import { AreaChartComponent } from './components/AreaChart';
-import { fetchDocumentsData } from './services/fetchServices';
+import { fetchDocumentsByYear } from './services/fetchServices';
 import './App.css'
 
 function App() {
   const [documents, setDocuments] = useState(null)
 
   const refrestDocumentsData = () => {
-    fetchDocumentsData().then(data => {
+    fetchDocumentsByYear().then(data => {
       console.log(data);
       setDocuments(data)
   })};

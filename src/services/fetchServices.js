@@ -1,34 +1,20 @@
-const GET_DOCUMENTS_BY_YEAR_URL = "http://localhost:5000/documents/year"
+const URL_PREFIX = "http://localhost:5000/"
 
 
-export async function fetchDocumentsData(from_year=2019, to_year=2023){
-    const response = await fetch(GET_DOCUMENTS_BY_YEAR_URL);
+export const fetchDocumentsByYear =  () => fetchData("documents", "year")
+export const fetchDocumentsByMonth = () => fetchData("documents", "month")
+export const fetchArticlesByYear =   () => fetchData("articles", "year")
+export const fetchArticlesByMonth =  () => fetchData("articles", "month")
+export const fetchIsbnByYear =       () => fetchData("isbn", "year")
+export const fetchIsbnByMonth =      () => fetchData("isbn", "month")
+
+async function fetchData(type, timeLapse){
+    const response = await fetch(`${URL_PREFIX}${type}/${timeLapse}`);
     if (!response.ok)
-        throw new Error('Failed to fetch data');
+        throw new Error(`Failed to fetch data: <type: ${type}> <time: ${timeLapse}>`);
 
     const data = await response.json();
     return data;
-}
-
-export function transformData(data){
-    const transformedData = [];
-    let nextName = null;
-    if (data.time_lapse == "year"){
-        nextName = (current) => current+1;
-    }
-    let currentKey = data.from
-    console.log(currentKey)
-    while (currentKey <= data.to){
-        let ob = {};
-        ob.name = currentKey;
-        if (currentKey in data.wos_data) ob.wos = data.wos_data[currentKey];
-        if (currentKey in data.scotus_data) ob.scotus = data.scotus_data[currentKey];
-        if (currentKey in data.pubmed_data) ob.pubmed = data.pubmed_data[currentKey];
-        if (currentKey in data.wos_scotus_data) ob.wos_scotus = data.wos_scotus_data[currentKey];
-        transformedData.push(ob);
-        currentKey = nextName(currentKey);
-    }
-    return transformedData;
 }
 
 export function range(size, startAt = 0) {
