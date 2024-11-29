@@ -1,10 +1,11 @@
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "recharts"
+import { ComposedChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar } from "recharts"
 import { range } from "../services/fetchServices"
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import { Button, Dropdown } from "flowbite-react"
 
-export function LinearChart({title, data}){
+export function BarLineChart({title, data}){
     const [showKeys, setShowKeys] = useState({})
+
     const [dropdownFrom, setDropdownFrom] = useState(data.to);
     const [dropdownTo, setDropdownTo] = useState(data.from);
 
@@ -19,6 +20,10 @@ export function LinearChart({title, data}){
         data.keys.forEach(key => {
             initShowKeys[key] = true
         })
+        data.bar_keys.forEach(key => {
+            initShowKeys[key] = true
+        })
+        console.log(initShowKeys);
         setShowKeys(initShowKeys)
     }, [])
 
@@ -46,10 +51,15 @@ export function LinearChart({title, data}){
                     <Dropdown.Item>Femenino</Dropdown.Item>
                 </Dropdown>
             </div>
-            <LineChart width={600} height={400} data={data.data}  margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+            <ComposedChart width={600} height={400} data={data.data}  margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                 {
                     data.keys.map(key => {
                         return <Line type="monotone" dataKey={key} stroke="#8884d8" key={key} hide={!showKeys[key]}/>
+                    })
+                }
+                {
+                    data.bar_keys.map(key => {
+                        return <Bar dataKey={key} fill="#8884d8" key={key} hide={!showKeys[key]}/>
                     })
                 }
                 <CartesianGrid stroke="#ccc" strokeDasharray="5 5"/>
@@ -57,10 +67,17 @@ export function LinearChart({title, data}){
                 <YAxis />
                 <Tooltip />
                 <Legend />
-            </LineChart>
+            </ComposedChart>
             <div>
                 {
                     data.keys.map(key => {
+                        return <Button key={key} onClick={() => handleShowKeys(key)}>
+                            {showKeys[key] ? `Ocultar ${key.toUpperCase()}`: `Mostrar ${key.toUpperCase()}`}
+                        </Button>
+                    })
+                }
+                {
+                    data.bar_keys.map(key => {
                         return <Button key={key} onClick={() => handleShowKeys(key)}>
                             {showKeys[key] ? `Ocultar ${key.toUpperCase()}`: `Mostrar ${key.toUpperCase()}`}
                         </Button>
