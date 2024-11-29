@@ -1,19 +1,23 @@
 import { useEffect, useState } from 'react';
 import { LinearChart } from './components/LinearChart'
-import { AreaChartComponent } from './components/AreaChart';
-import { fetchDocumentsByYear } from './services/fetchServices';
+import { fetchDocumentsByYear, fetchArticlesByYear, fetchIsbnByYear } from './services/fetchServices';
 import './App.css'
 
 function App() {
   const [documents, setDocuments] = useState(null)
+  const [articles, setArticles] = useState(null)
+  const [isbn, setIsbn] = useState(null)
 
-  const refrestDocumentsData = () => {
-    fetchDocumentsByYear().then(data => {
-      console.log(data);
-      setDocuments(data)
-  })};
+  const refrestDocumentsData = () => fetchDocumentsByYear().then(setDocuments);
+  const refreshArticlesData = () => fetchArticlesByYear().then(setArticles);
+  const refreshIsbnData = () => fetchIsbnByYear().then(setIsbn);
 
-  useEffect(refrestDocumentsData, []);
+
+  useEffect(() => {
+    refrestDocumentsData();
+    refreshArticlesData();
+    refreshIsbnData();
+  }, []);
 
   return (
     <>
@@ -29,6 +33,8 @@ function App() {
           <button>Personal Académico</button>
         </div>
         {documents && <LinearChart title="Documentos" data={documents} />}
+        {articles && <LinearChart title="Articulos" data={articles} />}
+        {isbn && <LinearChart title="ISBN" data={isbn} />}
       </main>
     </>
   )
