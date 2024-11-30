@@ -16,7 +16,7 @@ export default {
         current: 'currentColor',
         'white': '#FFFFFF',
         'black': '#000000',
-        'dark-background': '#02111B',
+        'dark-background': '#242424',
         'dark-primary': '#00BBF0',
         'dark-secondary': '#D9FAFF',
         'white-background': '#F8F4E3',
@@ -27,6 +27,8 @@ export default {
     },
   },
   plugins: [
-    flowbite.plugin()
+    flowbite.plugin(),
+    // eslint-disable-next-line no-undef
+    require("@xpd/tailwind-3dtransforms")
   ],
 }

@@ -15,7 +15,10 @@ function App() {
   const [isbn, setIsbn] = useState(null)
   const [projects, setProjects] = useState(null)
   const [patents, setPatents] = useState(null)
-  const parallax = useParallax({speed: -10})
+  const parallax = useParallax({
+    speed: -25,
+    opacity: [0.2, 0]
+  });
 
   const refrestDocumentsData = () => fetchDocumentsByYear().then(setDocuments);
   const refreshArticlesData = () => fetchArticlesByYear().then(setArticles);
@@ -45,8 +48,8 @@ function App() {
         </div>
       </header>
       <main>
-        <div ref={parallax.ref} className="overflow-hidden relative w-full h-screen flex flex-row items-center justify-between overflow-y-hidden">
-          <img src={facMedicina} className="left-0 top-0 w-full h-screen opacity-5 fixed bg-no-repeat" alt="Facultad de Medicina" />
+        <div className="relative h-screen flex flex-row items-center justify-between">
+          <img ref={parallax.ref} src={facMedicina} className="absolute w-full h-full object-cover" alt="Facultad de Medicina" />
           <h1 className='basis-full text-dark-primary font-bold text-7xl'>Facultad de Medicina</h1>
           <div className='flex flex-col basis-80 h-2/3 justify-center z-10 right-0 flex-initial'>
             <a href="https://web.siia.unam.mx/siia-publico/index.php" target="_blank" 
@@ -67,6 +70,7 @@ function App() {
             hover:text-dark-primary hover:bg-dark-primary/5 hover:scale-x-105 duration-300'>Personal Académico</a>
           </div>
         </div>
+        <div className='h-96 bg-[#242424] dark:bg-dark-background'></div>
         {documents && <LinearChart title="Documentos" data={documents} />}
         {articles && <LinearChart title="Articulos" data={articles} />}
         {isbn && <LinearChart title="ISBN" data={isbn} />}
