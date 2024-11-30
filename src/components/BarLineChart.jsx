@@ -30,6 +30,7 @@ export function BarLineChart({title, data}){
         })
         console.log(initShowKeys);
         setShowKeys(initShowKeys)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
