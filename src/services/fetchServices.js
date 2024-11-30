@@ -8,6 +8,7 @@ export const fetchArticlesByMonth =  () => fetchData("articles", "month")
 export const fetchIsbnByYear =       () => fetchData("isbn", "year")
 export const fetchIsbnByMonth =      () => fetchData("isbn", "month")
 export const fetchProjects =         () => fetchData("proyectos", "")
+export const fetchPatents =          () => fetchData("patentes", "")
 
 async function fetchData(type, timeLapse){
     const response = await fetch(`${URL_PREFIX}${type}/${timeLapse}`);
