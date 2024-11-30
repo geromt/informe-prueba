@@ -48,7 +48,7 @@ function App() {
         </div>
       </header>
       <main>
-        <div className="relative h-screen flex flex-row items-center justify-between">
+        <div className="relative snap-start h-screen flex flex-row items-center justify-between">
           <img ref={parallax.ref} src={facMedicina} className="absolute w-full h-full object-cover" alt="Facultad de Medicina" />
           <h1 className='basis-full text-dark-primary font-bold text-7xl'>Facultad de Medicina</h1>
           <div className='flex flex-col basis-80 h-2/3 justify-center z-10 right-0 flex-initial'>
@@ -71,11 +71,13 @@ function App() {
           </div>
         </div>
         <div className='h-96 bg-[#242424] dark:bg-dark-background'></div>
-        {documents && <LinearChart title="Documentos" data={documents} />}
-        {articles && <LinearChart title="Articulos" data={articles} />}
-        {isbn && <LinearChart title="ISBN" data={isbn} />}
-        {projects && <BarLineChart title="Proyectos" data={projects} />}
-        {patents && <PatentsTable title="Patentes" data={patents} />}
+        <div className='h-screen w-full mx:auto overflow-y-scroll flex flex-col snap-y snap-mandatory container'>
+          {documents && <LinearChart title="Documentos" data={documents} />}
+          {articles && <LinearChart title="Articulos" data={articles} />}
+          {isbn && <LinearChart title="ISBN" data={isbn} />}
+          {projects && <BarLineChart title="Proyectos" data={projects} />}
+          {patents && <PatentsTable title="Patentes" data={patents} />}
+        </div>
       </main>
     </>
   )

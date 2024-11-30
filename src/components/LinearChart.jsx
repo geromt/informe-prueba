@@ -29,7 +29,7 @@ export function LinearChart({title, data}){
     }, [])
 
     return (
-        <div className="bg-dark-background">
+        <div className="bg-dark-background flex flex-col align-middle justify-center h-screen snap-center shrink-0">
             <h1>{title}</h1>
             <div>
                 <Dropdown label="Desde">
