@@ -2,8 +2,13 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "r
 import { range } from "../services/fetchServices"
 import { useEffect, useState } from "react";
 import { Button, Dropdown } from "flowbite-react"
+import { PropTypes } from "prop-types"
 
 export function LinearChart({title, data}){
+    LinearChart.propTypes = {
+        title: PropTypes.string.isRequired,
+        data: PropTypes.object.isRequired
+    }
     const [showKeys, setShowKeys] = useState({})
     const [dropdownFrom, setDropdownFrom] = useState(data.to);
     const [dropdownTo, setDropdownTo] = useState(data.from);
@@ -20,6 +25,7 @@ export function LinearChart({title, data}){
             initShowKeys[key] = true
         })
         setShowKeys(initShowKeys)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (

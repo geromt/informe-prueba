@@ -1,9 +1,14 @@
 import { ComposedChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar } from "recharts"
 import { range } from "../services/fetchServices"
-import { useEffect, useState, memo } from "react";
+import { useEffect, useState } from "react";
 import { Button, Dropdown } from "flowbite-react"
+import { PropTypes } from "prop-types"
 
 export function BarLineChart({title, data}){
+    BarLineChart.propTypes = {
+        title: PropTypes.string.isRequired,
+        data: PropTypes.object.isRequired
+    }
     const [showKeys, setShowKeys] = useState({})
 
     const [dropdownFrom, setDropdownFrom] = useState(data.to);

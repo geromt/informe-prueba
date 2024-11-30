@@ -1,6 +1,11 @@
 import { Table } from "flowbite-react";
+import { PropTypes } from "prop-types";
 
 export function PatentsTable({title, data}){
+    PatentsTable.propTypes = {
+        title: PropTypes.string.isRequired,
+        data: PropTypes.object.isRequired
+    }
     return (
         <div>
             <h2>{title}</h2>
