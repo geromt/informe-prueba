@@ -1,6 +1,6 @@
 import { AreaChart, Area, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts"
 import { range } from "../services/fetchServices"
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button, Dropdown } from "flowbite-react"
 import { PropTypes } from "prop-types"
 import { CustomTooltip } from "./CustomTooltip";
@@ -19,6 +19,7 @@ export function LinearChart({title, data, colors, onSexSelected }){
     const [desdeLabel, setDesdeLabel] = useState(`Desde: ${data.from}`)
     const [hastaLabel, setHastaLabel] = useState(`Hasta: ${data.to}`)
     const [sexoLabel, setSexoLabel] = useState(`Sexo: Ambos`)
+    const lineChartContainer = useRef(null)
 
     const handleShowKeys = (key) => {
         const newKeys = {...showKeys};
@@ -43,6 +44,21 @@ export function LinearChart({title, data, colors, onSexSelected }){
         setDesdeLabel(`Desde: ${data.from}`)
         setHastaLabel(`Hasat: ${data.to}`)
     }, [data])
+
+    const chartToSVG = () => {
+      const svg = lineChartContainer.current.getElementsByTagName("svg")[0]
+      let svgURL = new XMLSerializer().serializeToString(svg);
+      console.log(svgURL)
+      let svgBlob = new Blob([svgURL], {type: "image/svg+xml;charset=utf-8"});
+      const url = window.URL || window.webkitURL;
+      const link = url.createObjectURL(svgBlob);
+      const a = document.createElement("a");
+      a.setAttribute("download", "chart.svg");
+      a.setAttribute("href", link);
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
       
 
     return (
@@ -109,6 +125,7 @@ export function LinearChart({title, data, colors, onSexSelected }){
                 </Dropdown.Item>
             </Dropdown>
           </div>
+          <div ref={lineChartContainer}>
           <ResponsiveContainer aspect={2.25} width={1200}>
             <AreaChart height={400} data={dataToChart}  margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
               <defs>
@@ -136,6 +153,7 @@ export function LinearChart({title, data, colors, onSexSelected }){
               <Legend onClick={(e) => handleShowKeys(e.dataKey)}/>
             </AreaChart>
           </ResponsiveContainer>
+          </div>
           <div className="flex flex-row justify-around w-1/2">
               {
                   data.keys.map(key => {
@@ -144,6 +162,7 @@ export function LinearChart({title, data, colors, onSexSelected }){
                       </Button>
                   })
               }
+              <Button onClick={chartToSVG}>Save to SVG</Button>
           </div>
         </div>
     )
