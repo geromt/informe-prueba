@@ -89,7 +89,7 @@ function App() {
     }
   }
 
-  const colors = ['#AF2BBF', "#51CB20", "#E4572E", "#773344", "#DA3E52"]
+  const colors = ['#8A0094',"#00FFC4", "#FF4B14", "#FC6DAB", "#08B2E3"]
 
   return (
     <div id="parent" className={mode}>
