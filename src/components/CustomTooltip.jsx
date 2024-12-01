@@ -13,7 +13,7 @@ export function CustomTooltip({ payload, label, active, data }) {
       return (
         <div className="bg-white-background/30 rounded-sm flex flex-col items-center">
           <p className="text-white-text font-bold text-2xl">{label}</p>
-          {
+          {payload.length > 0 &&
             data.keys.map((key, index) => {
               return <p key={key} className={colors[index]}>{`${key}: ${payload[index].value}`}</p>
             })

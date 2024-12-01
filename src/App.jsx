@@ -26,10 +26,12 @@ function App() {
     opacity: [0.25, 0]
   });
 
-  const refrestDocumentsData = () => fetchDocumentsByYear().then(setDocuments);
-  const refreshArticlesData = () => fetchArticlesByYear().then(setArticles);
-  const refreshIsbnData = () => fetchIsbnByYear().then(setIsbn);
-  const refreshProjectsData = () => fetchProjects().then(setProjects);
+  const refrestDocumentsData = (sex=null) => fetchDocumentsByYear(sex).then(data => {
+    console.log(data);
+    setDocuments(data)});
+  const refreshArticlesData = (sex=null) => fetchArticlesByYear(sex).then(setArticles);
+  const refreshIsbnData = (sex=null) => fetchIsbnByYear(sex).then(setIsbn);
+  const refreshProjectsData = (sex=null) => fetchProjects(sex).then(setProjects);
   const refreshPatents = () => fetchPatents().then(setPatents);
 
   useEffect(() => {
@@ -68,8 +70,23 @@ function App() {
   }
 
   const handleSexSelection = (sex, chartName) => {
-    console.log(sex)
-    console.log(chartName)
+    const sexParam = (sex == "M" || sex == "F") ? sex : null;
+    switch (chartName) {
+      case 'Documentos':
+        refrestDocumentsData(sexParam);
+        break;
+      case "Artículos":
+        refreshArticlesData(sexParam);
+        break;
+      case "ISBN":
+        refreshIsbnData(sexParam);
+        break;
+      case "Projects":
+        refreshProjectsData(sexParam);
+        break;
+      default:
+        console.log("Invalid Chart Name");
+    }
   }
 
   const colors = ['#AF2BBF', "#51CB20", "#E4572E", "#773344", "#DA3E52"]
@@ -105,7 +122,7 @@ function App() {
         <div className='h-96 bg-white-background dark:bg-dark-background'></div>
         <div onScroll={handleScroll} id="snap-scroll" className='w-full h-screen snap-y snap-mandatory overflow-x-hidden overflow-y-scroll sticky remove-scroll'>
           {documents && <LinearChart title="Documentos" data={documents} colors={colors} onSexSelected={handleSexSelection}/>}
-          {articles && <LinearChart title="Articulos" data={articles} colors={colors} onSexSelected={handleSexSelection}/>}
+          {articles && <LinearChart title="Artículos" data={articles} colors={colors} onSexSelected={handleSexSelection}/>}
           {isbn && <LinearChart title="ISBN" data={isbn} colors={colors} onSexSelected={handleSexSelection}/>}
           {projects && <BarLineChart title="Proyectos" data={projects} />}
           {patents && <PatentsTable title="Patentes" data={patents} />}

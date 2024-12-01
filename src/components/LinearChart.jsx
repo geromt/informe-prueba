@@ -37,8 +37,9 @@ export function LinearChart({title, data, colors, onSexSelected }){
             initShowKeys[key] = true
         })
         setShowKeys(initShowKeys)
+        setDataToChart(data.data)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [data])
       
 
     return (
@@ -92,14 +93,14 @@ export function LinearChart({title, data, colors, onSexSelected }){
                 <Dropdown.Item className="bg-cyan-800 text-white border-cyan500 hover:text-black"
                   onClick={() => {
                     setSexoLabel(`Sexo: Masculino`);
-                    onSexSelected("Masculino", title)
+                    onSexSelected("M", title)
                     }}>
                     Masculino
                 </Dropdown.Item>
                 <Dropdown.Item className="bg-cyan-800 text-white border-cyan500 hover:text-black" 
                   onClick={() => {
                     setSexoLabel(`Sexo: Femenino`);
-                    onSexSelected("Femenino", title);
+                    onSexSelected("F", title);
                   }}>
                   Femenino
                 </Dropdown.Item>
