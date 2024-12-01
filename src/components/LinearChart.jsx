@@ -129,8 +129,8 @@ export function LinearChart({title, data, colors, onSexSelected }){
               <CartesianGrid stroke="#ccc" strokeDasharray="3 3"/>
               <XAxis dataKey="name" />
               <YAxis />
-              <Tooltip content={<CustomTooltip data={data}/>}/>
-              <Legend />
+              <Tooltip content={<CustomTooltip data={data} showKeys={showKeys}/>}/>
+              <Legend onClick={(e) => handleShowKeys(e.dataKey)}/>
             </AreaChart>
           </ResponsiveContainer>
           <div className="flex flex-row justify-around w-1/2">

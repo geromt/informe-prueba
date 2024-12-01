@@ -72,7 +72,7 @@ export function BarLineChart({title, data}){
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
-                <Legend />
+                <Legend onClick={(e) => handleShowKeys(e.dataKey)} />
             </ComposedChart>
             <div>
                 {
