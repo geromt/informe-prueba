@@ -61,7 +61,7 @@ export function LinearChart({title, data, colors}){
       
 
     return (
-        <div className="bg-white-background w-full dark:bg-dark-background flex flex-col items-center justify-center h-screen">
+        <div className="bg-white-background w-full dark:bg-dark-background flex flex-col items-center justify-center h-screen snap-center shrink-0">
             <h1 className="text-white-text dark:bg-dark-secondary my-8">{title}</h1>
             <div className="flex flex-row justify-around w-full my-4">
                 <div className="flex flex-row gap-4 basis-1/2">

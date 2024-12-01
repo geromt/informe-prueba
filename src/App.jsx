@@ -19,6 +19,7 @@ function App() {
   const [patents, setPatents] = useState(null)
   const [mode, setMode] = useState('light')
   const [modeIcon, setModeIcon] = useState(sunSVG)
+  const [graficasScrollValue, setGraficasScrollValue] = useState(0)
   const parallax = useParallax({
     speed: -25,
     opacity: [0.2, 0]
@@ -48,10 +49,23 @@ function App() {
     }
   }
 
+  const handleScroll = event => {
+    const scrollPosition = event.target.scrollTop;
+    const bodyScrollPos = document.documentElement.scrollTop;
+    const maxScrollPos = document.documentElement.scrollHeight - document.getElementById("main-screen").clientHeight;
+    if (scrollPosition > graficasScrollValue && bodyScrollPos < maxScrollPos) {
+      event.target.scrollTop = graficasScrollValue;
+      const deltaScroll = graficasScrollValue - scrollPosition;
+      document.documentElement.scrollTop -= deltaScroll;
+    } else{
+      setGraficasScrollValue(scrollPosition);
+    }
+  }
+
   const colors = ['#AF2BBF', "#51CB20", "#E4572E", "#773344", "#DA3E52"]
 
   return (
-    <div className={mode}>
+    <div id="parent" className={mode}>
       <header className='w-full h-24 flex flex-row bg-transparent align-middle items-center justify-around absolute z-50'>
         <a href="https://web.siia.unam.mx/siia-publico/index.php" target="_blank">
           <img src={siiaLogo} className="logo basis-1/4" alt="SIIA logo" />
@@ -67,7 +81,7 @@ function App() {
         </div>
       </header>
       <main>
-        <div className="relative h-screen flex flex-row items-center justify-between">
+        <div id="main-screen" className="relative h-screen flex flex-row items-center justify-between">
           <img ref={parallax.ref} src={facMedicina} className="absolute w-full h-full object-cover" alt="Facultad de Medicina" />
           <h1 className='basis-full text-dark-primary font-bold text-7xl'>Facultad de Medicina</h1>
           <div className='flex flex-col basis-80 h-2/3 justify-center z-10 right-0 flex-initial'>
@@ -91,11 +105,13 @@ function App() {
         </div>
         
         <div className='h-96 bg-[#242424] dark:bg-dark-background'></div>
-        {documents && <LinearChart title="Documentos" data={documents} colors={colors}/>}
-        {articles && <LinearChart title="Articulos" data={articles} colors={colors}/>}
-        {isbn && <LinearChart title="ISBN" data={isbn} colors={colors}/>}
-        {projects && <BarLineChart title="Proyectos" data={projects} />}
-        {patents && <PatentsTable title="Patentes" data={patents} />}
+        <div onScroll={handleScroll} id="snap-scroll" className='w-full h-screen snap-y snap-mandatory overflow-x-hidden overflow-y-scroll sticky'>
+          {documents && <LinearChart title="Documentos" data={documents} colors={colors}/>}
+          {articles && <LinearChart title="Articulos" data={articles} colors={colors}/>}
+          {isbn && <LinearChart title="ISBN" data={isbn} colors={colors}/>}
+          {projects && <BarLineChart title="Proyectos" data={projects} />}
+          {patents && <PatentsTable title="Patentes" data={patents} />}
+        </div>
       </main>
     </div>
   )
