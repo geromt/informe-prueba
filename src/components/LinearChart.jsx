@@ -139,7 +139,8 @@ export function LinearChart({title, data, colors, onSexSelected }){
             </AreaChart>
           </ResponsiveContainer>
           </div>
-          <div className="flex flex-row justify-around w-1/2">
+          <div className="flex flex-row justify-center gap-12 items-center w-full">
+          <div className="flex flex-row justify-center grow">
               {
                   data.keys.map(key => {
                       return <Button key={key} onClick={() => handleShowKeys(key)}>
@@ -147,8 +148,11 @@ export function LinearChart({title, data, colors, onSexSelected }){
                       </Button>
                   })
               }
-              <Button onClick={() => chartToSVG(lineChartContainer.current)}>Save to SVG</Button>
-              <Button onClick={() => dataToTxt(dataToChart)}>Sava to JSON</Button>
+          </div>
+          <div className="flex flex-row items-center grow-0">
+              <Button gradientDuoTone="purpleToBlue" onClick={() => chartToSVG(lineChartContainer.current)}>Guardar como SVG</Button>
+              <Button gradientDuoTone="purpleToBlue" onClick={() => dataToTxt(dataToChart)}>Guardar como JSON</Button>
+          </div>
           </div>
         </div>
     )

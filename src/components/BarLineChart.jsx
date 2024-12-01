@@ -33,7 +33,6 @@ export function BarLineChart({title, data, colors, onSexSelected}){
     }
 
     useEffect(() => {
-        console.log(colors)
         const initShowKeys = {}
         data.keys.forEach(key => {
             initShowKeys[key] = true
@@ -133,8 +132,8 @@ export function BarLineChart({title, data, colors, onSexSelected}){
             </ComposedChart>
             </ResponsiveContainer>
             </div>
-            <div className="flex flex-row justify-around w-full">
-              <div className="flex flex-row justify-around">
+            <div className="flex flex-row justify-center gap-12 items-center w-full">
+              <div className="flex flex-row justify-center grow">
               {
                   data.keys.map(key => {
                       return <Button className="items-center" key={key} onClick={() => handleShowKeys(key)}>
@@ -150,7 +149,7 @@ export function BarLineChart({title, data, colors, onSexSelected}){
                   })
               }
               </div>
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center grow-0">
                 <Button gradientDuoTone="purpleToBlue" onClick={() => chartToSVG(lineChartContainer.current)}>Guardar como SVG</Button>
                 <Button gradientDuoTone="purpleToBlue" onClick={() => dataToTxt(dataToChart)}>Guardar como JSON</Button>
               </div>
