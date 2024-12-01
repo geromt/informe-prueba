@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button, Dropdown } from "flowbite-react"
 import { PropTypes } from "prop-types"
 import { CustomTooltip } from "./CustomTooltip";
+import { chartToSVG, dataToTxt } from "../services/chartsServices";
 
 export function LinearChart({title, data, colors, onSexSelected }){
     LinearChart.propTypes = {
@@ -44,33 +45,6 @@ export function LinearChart({title, data, colors, onSexSelected }){
         setDesdeLabel(`Desde: ${data.from}`)
         setHastaLabel(`Hasat: ${data.to}`)
     }, [data])
-
-    const chartToSVG = () => {
-      const svg = lineChartContainer.current.getElementsByTagName("svg")[0]
-      const svgURL = new XMLSerializer().serializeToString(svg);
-      const svgBlob = new Blob([svgURL], {type: "image/svg+xml;charset=utf-8"});
-      const url = window.URL || window.webkitURL;
-      const link = url.createObjectURL(svgBlob);
-      const a = document.createElement("a");
-      a.setAttribute("download", "chart.svg");
-      a.setAttribute("href", link);
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }
-
-    const dataToTxt = () => {
-      const dataBlob = new Blob([JSON.stringify(dataToChart)], {type: "text/plain;charset=utf-8"});
-      const url = window.URL || window.webkitURL;
-      const link = url.createObjectURL(dataBlob);
-      const a = document.createElement("a");
-      a.setAttribute("download", "data.txt");
-      a.setAttribute("href", link); 
-      document.body.appendChild(a)
-      a.click();
-      document.body.removeChild(a);
-    }
-      
 
     return (
         <div className="bg-white-background dark:bg-dark-background  flex flex-col items-center justify-center 
@@ -173,8 +147,8 @@ export function LinearChart({title, data, colors, onSexSelected }){
                       </Button>
                   })
               }
-              <Button onClick={chartToSVG}>Save to SVG</Button>
-              <Button onClick={dataToTxt}>Sava to JSON</Button>
+              <Button onClick={() => chartToSVG(lineChartContainer.current)}>Save to SVG</Button>
+              <Button onClick={() => dataToTxt(dataToChart)}>Sava to JSON</Button>
           </div>
         </div>
     )

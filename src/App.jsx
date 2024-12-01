@@ -81,7 +81,7 @@ function App() {
       case "ISBN":
         refreshIsbnData(sexParam);
         break;
-      case "Projects":
+      case "Proyectos":
         refreshProjectsData(sexParam);
         break;
       default:
@@ -124,7 +124,7 @@ function App() {
           {documents && <LinearChart title="Documentos" data={documents} colors={colors} onSexSelected={handleSexSelection}/>}
           {articles && <LinearChart title="Artículos" data={articles} colors={colors} onSexSelected={handleSexSelection}/>}
           {isbn && <LinearChart title="ISBN" data={isbn} colors={colors} onSexSelected={handleSexSelection}/>}
-          {projects && <BarLineChart title="Proyectos" data={projects} />}
+          {projects && <BarLineChart title="Proyectos" data={projects} colors={colors} onSexSelected={handleSexSelection}/>}
           {patents && <PatentsTable title="Patentes" data={patents} />}
         </div>
       </main>
