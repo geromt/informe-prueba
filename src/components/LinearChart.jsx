@@ -38,7 +38,10 @@ export function LinearChart({title, data, colors, onSexSelected }){
         })
         setShowKeys(initShowKeys)
         setDataToChart(data.data)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        setDropdownFrom(data.to)
+        setDropdownTo(data.from)
+        setDesdeLabel(`Desde: ${data.from}`)
+        setHastaLabel(`Hasat: ${data.to}`)
     }, [data])
       
 
