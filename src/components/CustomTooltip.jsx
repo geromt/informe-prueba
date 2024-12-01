@@ -9,7 +9,7 @@ export function CustomTooltip({ payload, label, active, data, showKeys }) {
       data: PropTypes.object,
       showKeys: PropTypes.object
     }
-    const colors = ['text-[#8A0094]', "text-[#00FFC4]", "text-[#FF4B14]", "text-[#FC6DAB]", "text-[#08B2E3]"]
+    const colors = ['text-[#8A0094]', "text-[#00FFC4]", "text-[#FF4B14]", "text-[#FC6DAB]", "text-[#08B2E3]", "text-[#2B9720]"]
     let payloadIndex = 0;
 
     useEffect(() => {

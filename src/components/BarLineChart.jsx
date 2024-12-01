@@ -117,12 +117,12 @@ export function BarLineChart({title, data, colors, onSexSelected}){
             <ComposedChart width={600} height={400} data={dataToChart}  margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                 {
                     data.keys.map(key => {
-                        return <Line type="monotone" dataKey={key} stroke="#8884d8" key={key} hide={!showKeys[key]}/>
+                        return <Line type="monotone" dataKey={key} stroke="#8884d8" strokeWidth={3} key={key} hide={!showKeys[key]}/>
                     })
                 }
                 {
-                    data.bar_keys.map(key => {
-                        return <Bar dataKey={key} fill="#8884d8" key={key} hide={!showKeys[key]}/>
+                    data.bar_keys.map((key, index) => {
+                        return <Bar dataKey={key} fill={colors[index]} key={key} hide={!showKeys[key]}/>
                     })
                 }
                 <CartesianGrid stroke="#ccc" strokeDasharray="5 5"/>
@@ -133,23 +133,27 @@ export function BarLineChart({title, data, colors, onSexSelected}){
             </ComposedChart>
             </ResponsiveContainer>
             </div>
-            <div className="flex flex-row justify-around w-1/2">
-                {
-                    data.keys.map(key => {
-                        return <Button key={key} onClick={() => handleShowKeys(key)}>
-                            {showKeys[key] ? `Ocultar ${key.toUpperCase()}`: `Mostrar ${key.toUpperCase()}`}
-                        </Button>
-                    })
-                }
-                {
-                    data.bar_keys.map(key => {
-                        return <Button key={key} onClick={() => handleShowKeys(key)}>
-                            {showKeys[key] ? `Ocultar ${key.toUpperCase()}`: `Mostrar ${key.toUpperCase()}`}
-                        </Button>
-                    })
-                }
-                <Button onClick={() => chartToSVG(lineChartContainer.current)}>Save to SVG</Button>
-                <Button onClick={() => dataToTxt(dataToChart)}>Sava to JSON</Button>
+            <div className="flex flex-row justify-around w-full">
+              <div className="flex flex-row justify-around">
+              {
+                  data.keys.map(key => {
+                      return <Button className="items-center" key={key} onClick={() => handleShowKeys(key)}>
+                          {showKeys[key] ? `Ocultar ${key.toUpperCase()}`: `Mostrar ${key.toUpperCase()}`}
+                      </Button>
+                  })
+              }
+              {
+                  data.bar_keys.map(key => {
+                      return <Button className="items-center" key={key} onClick={() => handleShowKeys(key)}>
+                          {showKeys[key] ? `Ocultar ${key.toUpperCase()}`: `Mostrar ${key.toUpperCase()}`}
+                      </Button>
+                  })
+              }
+              </div>
+              <div className="flex flex-col items-center">
+                <Button gradientDuoTone="purpleToBlue" onClick={() => chartToSVG(lineChartContainer.current)}>Guardar como SVG</Button>
+                <Button gradientDuoTone="purpleToBlue" onClick={() => dataToTxt(dataToChart)}>Guardar como JSON</Button>
+              </div>
             </div>
         </div>
     )
