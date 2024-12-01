@@ -47,15 +47,26 @@ export function LinearChart({title, data, colors, onSexSelected }){
 
     const chartToSVG = () => {
       const svg = lineChartContainer.current.getElementsByTagName("svg")[0]
-      let svgURL = new XMLSerializer().serializeToString(svg);
-      console.log(svgURL)
-      let svgBlob = new Blob([svgURL], {type: "image/svg+xml;charset=utf-8"});
+      const svgURL = new XMLSerializer().serializeToString(svg);
+      const svgBlob = new Blob([svgURL], {type: "image/svg+xml;charset=utf-8"});
       const url = window.URL || window.webkitURL;
       const link = url.createObjectURL(svgBlob);
       const a = document.createElement("a");
       a.setAttribute("download", "chart.svg");
       a.setAttribute("href", link);
       document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    const dataToTxt = () => {
+      const dataBlob = new Blob([JSON.stringify(dataToChart)], {type: "text/plain;charset=utf-8"});
+      const url = window.URL || window.webkitURL;
+      const link = url.createObjectURL(dataBlob);
+      const a = document.createElement("a");
+      a.setAttribute("download", "data.txt");
+      a.setAttribute("href", link); 
+      document.body.appendChild(a)
       a.click();
       document.body.removeChild(a);
     }
@@ -163,6 +174,7 @@ export function LinearChart({title, data, colors, onSexSelected }){
                   })
               }
               <Button onClick={chartToSVG}>Save to SVG</Button>
+              <Button onClick={dataToTxt}>Sava to JSON</Button>
           </div>
         </div>
     )
