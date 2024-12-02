@@ -5,12 +5,12 @@ import { Button, Dropdown } from "flowbite-react"
 import { PropTypes } from "prop-types"
 import { chartToSVG, dataToTxt } from "../services/chartsServices";
 
-export function BarLineChart({title, data, colors, onSexSelected}){
+export function BarLineChart({title, data, colors, onDataSelected}){
     BarLineChart.propTypes = {
         title: PropTypes.string.isRequired,
         data: PropTypes.object.isRequired,
         colors: PropTypes.array.isRequired,
-        onSexSelected: PropTypes.func.isRequired
+        onDataSelected: PropTypes.func.isRequired
     }
     const [dataToChart, setDataToChart] = useState(data.data)
     const [showKeys, setShowKeys] = useState({})
@@ -91,21 +91,21 @@ export function BarLineChart({title, data, colors, onSexSelected}){
                     <Dropdown.Item className="bg-cyan-800 text-white border-cyan500 hover:text-black" 
                     onClick={() => {
                         setSexoLabel(`Sexo: Ambos`);
-                        onSexSelected("Ambos", title)
+                        onDataSelected("Ambos", "year", title)
                     }}>
                     Ambos
                     </Dropdown.Item>
                     <Dropdown.Item className="bg-cyan-800 text-white border-cyan500 hover:text-black"
                     onClick={() => {
                         setSexoLabel(`Sexo: Masculino`);
-                        onSexSelected("M", title)
+                        onDataSelected("M", "year", title)
                         }}>
                         Masculino
                     </Dropdown.Item>
                     <Dropdown.Item className="bg-cyan-800 text-white border-cyan500 hover:text-black" 
                     onClick={() => {
                         setSexoLabel(`Sexo: Femenino`);
-                        onSexSelected("F", title);
+                        onDataSelected("F", "year", title);
                     }}>
                     Femenino
                     </Dropdown.Item>

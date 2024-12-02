@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { LinearChart } from './components/LinearChart'
 import { BarLineChart } from './components/BarLineChart';
 import { MainButton } from './components/MainButton';
-import { fetchDocumentsByYear, fetchArticlesByYear, fetchIsbnByYear, fetchProjects, fetchPatents } from './services/fetchServices';
+import { fetchDocuments, fetchArticles, fetchIsbn, fetchProjects, fetchPatents } from './services/fetchServices';
 import './App.css'
 import siiaLogo from './assets/siia_sm.png'
 import githubLogo from './assets/github.svg'
@@ -26,11 +26,9 @@ function App() {
     opacity: [0.25, 0]
   });
 
-  const refrestDocumentsData = (sex=null) => fetchDocumentsByYear(sex).then(data => {
-    console.log(data);
-    setDocuments(data)});
-  const refreshArticlesData = (sex=null) => fetchArticlesByYear(sex).then(setArticles);
-  const refreshIsbnData = (sex=null) => fetchIsbnByYear(sex).then(setIsbn);
+  const refrestDocumentsData = (sex=null, timeLapse="year") => fetchDocuments(sex, timeLapse).then(setDocuments);
+  const refreshArticlesData = (sex=null, timeLapse="year") => fetchArticles(sex, timeLapse).then(setArticles);
+  const refreshIsbnData = (sex=null, timeLapse="year") => fetchIsbn(sex, timeLapse).then(setIsbn);
   const refreshProjectsData = (sex=null) => fetchProjects(sex).then(setProjects);
   const refreshPatents = () => fetchPatents().then(setPatents);
 
@@ -69,17 +67,17 @@ function App() {
     }
   }
 
-  const handleSexSelection = (sex, chartName) => {
+  const handleDataSelection = (sex, timeLapse, chartName) => {
     const sexParam = (sex == "M" || sex == "F") ? sex : null;
     switch (chartName) {
       case 'Documentos':
-        refrestDocumentsData(sexParam);
+        refrestDocumentsData(sexParam, timeLapse);
         break;
       case "Artículos":
-        refreshArticlesData(sexParam);
+        refreshArticlesData(sexParam, timeLapse);
         break;
       case "ISBN":
-        refreshIsbnData(sexParam);
+        refreshIsbnData(sexParam, timeLapse);
         break;
       case "Proyectos":
         refreshProjectsData(sexParam);
@@ -121,10 +119,10 @@ function App() {
         
         <div className='h-96 bg-white-background dark:bg-dark-background'></div>
         <div onScroll={handleScroll} id="snap-scroll" className='w-full h-screen snap-y snap-mandatory overflow-x-hidden overflow-y-scroll sticky remove-scroll'>
-          {documents && <LinearChart title="Documentos" data={documents} colors={colors} onSexSelected={handleSexSelection}/>}
-          {articles && <LinearChart title="Artículos" data={articles} colors={colors} onSexSelected={handleSexSelection}/>}
-          {isbn && <LinearChart title="ISBN" data={isbn} colors={colors} onSexSelected={handleSexSelection}/>}
-          {projects && <BarLineChart title="Proyectos" data={projects} colors={colors} onSexSelected={handleSexSelection}/>}
+          {documents && <LinearChart title="Documentos" data={documents} colors={colors} onDataSelected={handleDataSelection}/>}
+          {articles && <LinearChart title="Artículos" data={articles} colors={colors} onDataSelected={handleDataSelection}/>}
+          {isbn && <LinearChart title="ISBN" data={isbn} colors={colors} onDataSelected={handleDataSelection}/>}
+          {projects && <BarLineChart title="Proyectos" data={projects} colors={colors} onDataSelected={handleDataSelection}/>}
           {patents && <PatentsTable title="Patentes" data={patents} />}
         </div>
       </main>

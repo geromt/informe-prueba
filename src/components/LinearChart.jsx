@@ -6,12 +6,12 @@ import { PropTypes } from "prop-types"
 import { CustomTooltip } from "./CustomTooltip";
 import { chartToSVG, dataToTxt } from "../services/chartsServices";
 
-export function LinearChart({title, data, colors, onSexSelected }){
+export function LinearChart({title, data, colors, onDataSelected }){
     LinearChart.propTypes = {
         title: PropTypes.string.isRequired,
         data: PropTypes.object.isRequired,
         colors: PropTypes.array.isRequired,
-        onSexSelected: PropTypes.func.isRequired
+        onDataSelected: PropTypes.func.isRequired
     }
     const [dataToChart, setDataToChart] = useState(data.data)
     const [showKeys, setShowKeys] = useState({})
@@ -19,7 +19,10 @@ export function LinearChart({title, data, colors, onSexSelected }){
     const [dropdownTo, setDropdownTo] = useState(data.from);
     const [desdeLabel, setDesdeLabel] = useState(`Desde: ${data.from}`)
     const [hastaLabel, setHastaLabel] = useState(`Hasta: ${data.to}`)
+    const [sexo, setSexo] = useState("Ambos")
     const [sexoLabel, setSexoLabel] = useState(`Sexo: Ambos`)
+    const [time, setTime] = useState("year")
+    const [timeLabel, setTimeLabel] = useState("Tiempo: Años")
     const lineChartContainer = useRef(null)
 
     const handleShowKeys = (key) => {
@@ -29,7 +32,12 @@ export function LinearChart({title, data, colors, onSexSelected }){
     }
 
     const sliceData = (completeData, from, to) => {
-      const slicedData =  completeData.filter((item) => item.name >= from && item.name <= to);
+      let slicedData;
+      if (time === "year")
+        slicedData =  completeData.filter((item) => item.name >= from && item.name <= to);
+      else if (time === "month")
+        slicedData =  completeData.filter((item) => parseInt(item.name.split("-")[0]) >= from && 
+      parseInt(item.name.split("-")[0]) <= to);
       setDataToChart(slicedData)
     }
 
@@ -43,7 +51,7 @@ export function LinearChart({title, data, colors, onSexSelected }){
         setDropdownFrom(data.to)
         setDropdownTo(data.from)
         setDesdeLabel(`Desde: ${data.from}`)
-        setHastaLabel(`Hasat: ${data.to}`)
+        setHastaLabel(`Hasta: ${data.to}`)
     }, [data])
 
     return (
@@ -85,26 +93,46 @@ export function LinearChart({title, data, colors, onSexSelected }){
               }
               </Dropdown>
             </div>
-                
+            <Dropdown label={timeLabel}>
+                <Dropdown.Item className="bg-cyan-800 text-white border-cyan500 hover:text-black" 
+                  onClick={() => {
+                    setTimeLabel(`Tiempo: Años`);
+                    setTime("year")
+                    onDataSelected(sexo, "year", title)
+                  }}>
+                  Años
+                </Dropdown.Item>
+                <Dropdown.Item className="bg-cyan-800 text-white border-cyan500 hover:text-black"
+                  onClick={() => {
+                    setTimeLabel(`Tiempo: Meses`);
+                    setTime("month")
+                    onDataSelected(sexo, "month", title)
+                    }}>
+                    Meses
+                </Dropdown.Item>
+            </Dropdown>    
             <Dropdown label={sexoLabel}>
                 <Dropdown.Item className="bg-cyan-800 text-white border-cyan500 hover:text-black" 
                   onClick={() => {
                     setSexoLabel(`Sexo: Ambos`);
-                    onSexSelected("Ambos", title)
+                    setSexo("Ambos")
+                    onDataSelected("Ambos", time, title)
                   }}>
                   Ambos
                 </Dropdown.Item>
                 <Dropdown.Item className="bg-cyan-800 text-white border-cyan500 hover:text-black"
                   onClick={() => {
                     setSexoLabel(`Sexo: Masculino`);
-                    onSexSelected("M", title)
+                    setSexo("M")
+                    onDataSelected("M", time, title)
                     }}>
                     Masculino
                 </Dropdown.Item>
                 <Dropdown.Item className="bg-cyan-800 text-white border-cyan500 hover:text-black" 
                   onClick={() => {
                     setSexoLabel(`Sexo: Femenino`);
-                    onSexSelected("F", title);
+                    setSexo("F")
+                    onDataSelected("F", time, title);
                   }}>
                   Femenino
                 </Dropdown.Item>
