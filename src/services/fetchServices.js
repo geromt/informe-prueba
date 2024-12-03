@@ -6,6 +6,7 @@ export const fetchArticles =   (sex=null, timeLapse="year") => fetchData("articl
 export const fetchIsbn =       (sex=null, timeLapse="year") => fetchData("isbn", timeLapse, sex)
 export const fetchHumanindex = (sex=null, timeLapse="year") => fetchData("humanindex", timeLapse, sex)
 export const fetchProjects =         (sex=null) => fetchData("proyectos", "", sex)
+export const fetchParticipacionesProjects =  (sex=null) => fetchData("participaciones-proyectos", "", sex)
 export const fetchPatents =          () => fetchData("patentes", "", null)
 
 async function fetchData(type, timeLapse, sex=null){

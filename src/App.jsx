@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { LinearChart } from './components/LinearChart'
 import { BarLineChart } from './components/BarLineChart';
 import { MainButton } from './components/MainButton';
-import { fetchDocuments, fetchArticles, fetchIsbn, fetchHumanindex, fetchProjects, fetchPatents } from './services/fetchServices';
+import { fetchDocuments, fetchArticles, fetchIsbn, fetchHumanindex, fetchProjects, fetchPatents, fetchParticipacionesProjects } from './services/fetchServices';
 import './App.css'
 import siiaLogo from './assets/siia_sm.png'
 import githubLogo from './assets/github.svg'
@@ -18,6 +18,7 @@ function App() {
   const [isbn, setIsbn] = useState(null)
   const [humanindex, setHumanindex] = useState(null)
   const [projects, setProjects] = useState(null)
+  const [participacionesProjects, setParticipacionesProjects] = useState(null)
   const [patents, setPatents] = useState(null)
   const [mode, setMode] = useState('light')
   const [modeIcon, setModeIcon] = useState(sunSVG)
@@ -32,6 +33,7 @@ function App() {
   const refreshIsbnData = (sex=null, timeLapse="year") => fetchIsbn(sex, timeLapse).then(setIsbn);
   const refrestHumanIndex = (sex=null, timeLapse="year") => fetchHumanindex(sex, timeLapse).then(setHumanindex);
   const refreshProjectsData = (sex=null) => fetchProjects(sex).then(setProjects);
+  const refreshParticipacionesProjects = (sex=null) => fetchParticipacionesProjects(sex).then(setParticipacionesProjects);
   const refreshPatents = () => fetchPatents().then(setPatents);
 
   useEffect(() => {
@@ -40,6 +42,7 @@ function App() {
     refreshIsbnData();
     refrestHumanIndex();
     refreshProjectsData();
+    refreshParticipacionesProjects();
     refreshPatents();
   }, []);
 
@@ -88,6 +91,9 @@ function App() {
       case "Proyectos":
         refreshProjectsData(sexParam);
         break;
+      case "Parcitipaciones Proyectos":
+        refreshParticipacionesProjects(sexParam);
+        break;
       default:
         console.log("Invalid Chart Name");
     }
@@ -130,6 +136,7 @@ function App() {
           {isbn && <LinearChart title="ISBN" data={isbn} colors={colors} onDataSelected={handleDataSelection}/>}
           {humanindex && <LinearChart title="Humanindex" data={humanindex} colors={colors} onDataSelected={handleDataSelection}/>}
           {projects && <BarLineChart title="Proyectos" data={projects} colors={colors} onDataSelected={handleDataSelection}/>}
+          {participacionesProjects && <BarLineChart title="Parcitipaciones Proyectos" data={participacionesProjects} colors={colors} onDataSelected={handleDataSelection}/>}
           {patents && <PatentsTable title="Patentes" data={patents} />}
         </div>
       </main>
