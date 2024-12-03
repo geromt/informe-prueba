@@ -45,7 +45,7 @@ export function BarLineChart({title, data, colors, onDataSelected}){
         setDropdownFrom(data.to)
         setDropdownTo(data.from)
         setDesdeLabel(`Desde: ${data.from}`)
-        setHastaLabel(`Hasat: ${data.to}`)
+        setHastaLabel(`Hasta: ${data.to}`)
     }, [data])
 
     return (
@@ -55,11 +55,11 @@ export function BarLineChart({title, data, colors, onDataSelected}){
           dark:text-dark-secondary dark:bg-dark-background my-8">{title}</h1>
             <div className="flex flex-row justify-around w-full my-4">
             <div className="flex flex-row gap-4 basis-1/2">
-                <Dropdown label={desdeLabel}>
+                <Dropdown outline gradientDuoTone="purpleToBlue" className="bg-transparent border-0" label={desdeLabel}>
                     {
                         range(dropdownFrom-data.from + 1, data.from).map((i) => {
                            return (
-                           <Dropdown.Item className="bg-cyan-800 text-white border-cyan-500  hover:text-black" 
+                           <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
                            onClick={() => {
                             setDropdownTo(i);
                             setDesdeLabel(`Desde: ${i}`);
@@ -70,11 +70,11 @@ export function BarLineChart({title, data, colors, onDataSelected}){
                         })
                     }
                 </Dropdown>
-                <Dropdown label={hastaLabel}>
+                <Dropdown outline gradientDuoTone="purpleToBlue" className="bg-transparent border-0" label={hastaLabel}>
                 {
                     range(data.to-dropdownTo + 1, dropdownTo).map((i) => {
                     return (
-                        <Dropdown.Item className="bg-cyan-800 text-white border-cyan500 hover:text-black" 
+                        <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
                         onClick={() => {
                             setDropdownFrom(i);
                             setHastaLabel(`Hasta: ${i}`);
@@ -87,22 +87,22 @@ export function BarLineChart({title, data, colors, onDataSelected}){
                 }
                 </Dropdown>
                 </div>
-                <Dropdown label={sexoLabel}>
-                    <Dropdown.Item className="bg-cyan-800 text-white border-cyan500 hover:text-black" 
+                <Dropdown outline gradientDuoTone="purpleToBlue" className="bg-transparent border-0" label={sexoLabel}>
+                    <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
                     onClick={() => {
                         setSexoLabel(`Sexo: Ambos`);
                         onDataSelected("Ambos", "year", title)
                     }}>
                     Ambos
                     </Dropdown.Item>
-                    <Dropdown.Item className="bg-cyan-800 text-white border-cyan500 hover:text-black"
+                    <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105"
                     onClick={() => {
                         setSexoLabel(`Sexo: Masculino`);
                         onDataSelected("M", "year", title)
                         }}>
                         Masculino
                     </Dropdown.Item>
-                    <Dropdown.Item className="bg-cyan-800 text-white border-cyan500 hover:text-black" 
+                    <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
                     onClick={() => {
                         setSexoLabel(`Sexo: Femenino`);
                         onDataSelected("F", "year", title);
@@ -136,22 +136,22 @@ export function BarLineChart({title, data, colors, onDataSelected}){
               <div className="flex flex-row justify-center grow">
               {
                   data.keys.map(key => {
-                      return <Button className="items-center" key={key} onClick={() => handleShowKeys(key)}>
+                      return <Button gradientDuoTone="purpleToBlue" className="items-center" key={key} onClick={() => handleShowKeys(key)}>
                           {showKeys[key] ? `Ocultar ${key.toUpperCase()}`: `Mostrar ${key.toUpperCase()}`}
                       </Button>
                   })
               }
               {
                   data.bar_keys.map(key => {
-                      return <Button className="items-center" key={key} onClick={() => handleShowKeys(key)}>
+                      return <Button gradientDuoTone="purpleToBlue" className="items-center" key={key} onClick={() => handleShowKeys(key)}>
                           {showKeys[key] ? `Ocultar ${key.toUpperCase()}`: `Mostrar ${key.toUpperCase()}`}
                       </Button>
                   })
               }
               </div>
               <div className="flex flex-col items-center grow-0">
-                <Button gradientDuoTone="purpleToBlue" onClick={() => chartToSVG(lineChartContainer.current)}>Guardar como SVG</Button>
-                <Button gradientDuoTone="purpleToBlue" onClick={() => dataToTxt(dataToChart)}>Guardar como JSON</Button>
+                <Button outline gradientDuoTone="pinkToOrange" onClick={() => chartToSVG(lineChartContainer.current)}>Guardar como SVG</Button>
+                <Button outline gradientDuoTone="pinkToOrange" onClick={() => dataToTxt(dataToChart)}>Guardar como JSON</Button>
               </div>
             </div>
         </div>

@@ -91,14 +91,14 @@ function App() {
 
   return (
     <div id="parent" className={mode}>
-      <header className='w-full h-24 flex flex-row bg-transparent align-middle items-center justify-around absolute z-50'>
+      <header className='w-full h-12 mt-2 lg:h-24 flex flex-row bg-transparent align-middle items-center justify-around absolute z-50'>
         <a href="https://web.siia.unam.mx/siia-publico/index.php" target="_blank">
-          <img src={siiaLogo} className="logo basis-1/4" alt="SIIA logo" />
+          <img src={siiaLogo} className="logo basis-3/4 lg:basis-1/4" alt="SIIA logo" />
         </a>
-        <h2 className='text-center text-2xl basis-auto font-mono text-white-secondary dark:text-dark-secondary'>Sistema Integral de Información Académica</h2>
+        <h2 className='collapse lg:visible text-center text-2xl basis-auto font-mono text-white-secondary dark:text-dark-secondary'>Sistema Integral de Información Académica</h2>
         <div className='basis-1/6 flex flex-row'>
           <a href="https://github.com/geromt/informe-prueba" target="_blank" className='h-24 w-24'>
-            <img src={githubLogo} className='w-24 h-24 p-6 hover:scale-105' alt="Github logo" />
+            <img src={githubLogo} className='w-full h-full p-6 hover:scale-105' alt="Github logo" />
           </a>
           <button className='h-24 w-24 bg-transparent hover:border-0' onClick={toggleMode}>
             <img src={modeIcon} className='w-full h-full hover:scale-105' alt="Mode switcher" />
@@ -106,9 +106,9 @@ function App() {
         </div>
       </header>
       <main>
-        <div id="main-screen" className="relative h-screen flex flex-row items-center justify-between">
+        <div id="main-screen" className="relative h-screen flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-4 lg:gap-0">
           <img ref={parallax.ref} src={facMedicina} className="absolute w-full h-full object-cover" alt="Facultad de Medicina" />
-          <h1 className='basis-full text-white-secondary underline dark:text-dark-primary font-bold text-7xl'>Facultad de Medicina</h1>
+          <h1 className='lg:basis-full text-white-secondary underline dark:text-dark-primary font-bold text-7xl'>Facultad de Medicina</h1>
           <div className='flex flex-col basis-80 h-2/3 justify-center z-10 right-0 flex-initial'>
             <MainButton text="Producción Académica" />
             <MainButton text="Docencia" />
@@ -117,7 +117,7 @@ function App() {
           </div>
         </div>
         
-        <div className='h-96 bg-white-background dark:bg-dark-background'></div>
+        <div className='h-48 lg:h-96 bg-white-background dark:bg-dark-background'></div>
         <div onScroll={handleScroll} id="snap-scroll" className='w-full h-screen snap-y snap-mandatory overflow-x-hidden overflow-y-scroll sticky remove-scroll'>
           {documents && <LinearChart title="Documentos" data={documents} colors={colors} onDataSelected={handleDataSelection}/>}
           {articles && <LinearChart title="Artículos" data={articles} colors={colors} onDataSelected={handleDataSelection}/>}

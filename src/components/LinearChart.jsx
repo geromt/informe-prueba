@@ -5,6 +5,7 @@ import { Button, Dropdown } from "flowbite-react"
 import { PropTypes } from "prop-types"
 import { CustomTooltip } from "./CustomTooltip";
 import { chartToSVG, dataToTxt } from "../services/chartsServices";
+//import { MyDropdown } from "./MyDropdown";
 
 export function LinearChart({title, data, colors, onDataSelected }){
     LinearChart.propTypes = {
@@ -58,14 +59,14 @@ export function LinearChart({title, data, colors, onDataSelected }){
         <div className="bg-white-background dark:bg-dark-background  flex flex-col items-center justify-center 
           w-full h-screen snap-center shrink-0">
           <h1 className="text-white-secondary db-white-background 
-          dark:text-dark-secondary dark:bg-dark-background my-8">{title}</h1>
-          <div className="flex flex-row justify-around w-full my-4">
-            <div className="flex flex-row gap-4 basis-1/2">
-              <Dropdown label={desdeLabel}>
+          dark:text-dark-secondary dark:bg-dark-background my-4 lg:my-8">{title}</h1>
+          <div className="flex flex-row justify-around w-full my-4 gap-2 lg:gap-0">
+            <div className="flex flex-row lg:gap-4 basis-1/2">
+              <Dropdown outline gradientDuoTone="purpleToBlue" className="bg-transparent border-0" label={desdeLabel}>
               {
                 range(dropdownFrom-data.from + 1, data.from).map((i) => {
                   return (
-                  <Dropdown.Item className="bg-cyan-800 text-white border-cyan-500  hover:text-black" 
+                  <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
                     onClick={() => {
                       setDropdownTo(i);
                       setDesdeLabel(`Desde: ${i}`);
@@ -76,11 +77,11 @@ export function LinearChart({title, data, colors, onDataSelected }){
                 })
               }
               </Dropdown>
-              <Dropdown label={hastaLabel}>
+              <Dropdown outline gradientDuoTone="purpleToBlue" className="bg-transparent border-0" label={hastaLabel}>
               {
                 range(data.to-dropdownTo + 1, dropdownTo).map((i) => {
                   return (
-                    <Dropdown.Item className="bg-cyan-800 text-white border-cyan500 hover:text-black" 
+                    <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
                       onClick={() => {
                         setDropdownFrom(i);
                         setHastaLabel(`Hasta: ${i}`);
@@ -93,8 +94,8 @@ export function LinearChart({title, data, colors, onDataSelected }){
               }
               </Dropdown>
             </div>
-            <Dropdown label={timeLabel}>
-                <Dropdown.Item className="bg-cyan-800 text-white border-cyan500 hover:text-black" 
+            <Dropdown outline gradientDuoTone="purpleToBlue" className="bg-transparent border-0" label={timeLabel}>
+                <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
                   onClick={() => {
                     setTimeLabel(`Tiempo: Años`);
                     setTime("year")
@@ -102,7 +103,7 @@ export function LinearChart({title, data, colors, onDataSelected }){
                   }}>
                   Años
                 </Dropdown.Item>
-                <Dropdown.Item className="bg-cyan-800 text-white border-cyan500 hover:text-black"
+                <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105"
                   onClick={() => {
                     setTimeLabel(`Tiempo: Meses`);
                     setTime("month")
@@ -111,8 +112,8 @@ export function LinearChart({title, data, colors, onDataSelected }){
                     Meses
                 </Dropdown.Item>
             </Dropdown>    
-            <Dropdown label={sexoLabel}>
-                <Dropdown.Item className="bg-cyan-800 text-white border-cyan500 hover:text-black" 
+            <Dropdown outline gradientDuoTone="purpleToBlue" className="bg-transparent border-0" label={sexoLabel}>
+                <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
                   onClick={() => {
                     setSexoLabel(`Sexo: Ambos`);
                     setSexo("Ambos")
@@ -120,7 +121,7 @@ export function LinearChart({title, data, colors, onDataSelected }){
                   }}>
                   Ambos
                 </Dropdown.Item>
-                <Dropdown.Item className="bg-cyan-800 text-white border-cyan500 hover:text-black"
+                <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105"
                   onClick={() => {
                     setSexoLabel(`Sexo: Masculino`);
                     setSexo("M")
@@ -128,7 +129,7 @@ export function LinearChart({title, data, colors, onDataSelected }){
                     }}>
                     Masculino
                 </Dropdown.Item>
-                <Dropdown.Item className="bg-cyan-800 text-white border-cyan500 hover:text-black" 
+                <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
                   onClick={() => {
                     setSexoLabel(`Sexo: Femenino`);
                     setSexo("F")
@@ -138,8 +139,8 @@ export function LinearChart({title, data, colors, onDataSelected }){
                 </Dropdown.Item>
             </Dropdown>
           </div>
-          <div ref={lineChartContainer}>
-          <ResponsiveContainer aspect={2.25} width={1200}>
+          <div ref={lineChartContainer} className="w-full h-2/3">
+          <ResponsiveContainer width="100%">
             <AreaChart height={400} data={dataToChart}  margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
               <defs>
               {
@@ -167,20 +168,20 @@ export function LinearChart({title, data, colors, onDataSelected }){
             </AreaChart>
           </ResponsiveContainer>
           </div>
-          <div className="flex flex-row justify-center gap-12 items-center w-full">
-          <div className="flex flex-row justify-center grow">
-              {
-                  data.keys.map(key => {
-                      return <Button key={key} onClick={() => handleShowKeys(key)}>
-                          {showKeys[key] ? `Ocultar ${key.toUpperCase()}`: `Mostrar ${key.toUpperCase()}`}
-                      </Button>
-                  })
-              }
-          </div>
-          <div className="flex flex-row items-center grow-0">
-              <Button gradientDuoTone="purpleToBlue" onClick={() => chartToSVG(lineChartContainer.current)}>Guardar como SVG</Button>
-              <Button gradientDuoTone="purpleToBlue" onClick={() => dataToTxt(dataToChart)}>Guardar como JSON</Button>
-          </div>
+          <div className="flex flex-row justify-center gap-1 lg:gap-12 items-center w-full">
+            <div className="grid grid-cols-2 gap-1 lg:flex lg:flex-row justify-center lg:gap-8 grow">
+                {
+                    data.keys.map(key => {
+                        return <Button gradientDuoTone="purpleToBlue" size="sm" key={key} onClick={() => handleShowKeys(key)}>
+                            {showKeys[key] ? `Ocultar ${key.toUpperCase()}`: `Mostrar ${key.toUpperCase()}`}
+                        </Button>
+                    })
+                }
+            </div>
+            <div className="flex flex-row gap-1 items-center grow-0">
+                <Button size="sm" outline gradientDuoTone="pinkToOrange" onClick={() => chartToSVG(lineChartContainer.current)}>Guardar como SVG</Button>
+                <Button size="sm" outline gradientDuoTone="pinkToOrange" onClick={() => dataToTxt(dataToChart)}>Guardar como JSON</Button>
+            </div>
           </div>
         </div>
     )
