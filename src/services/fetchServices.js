@@ -4,6 +4,7 @@ const URL_PREFIX = "http://localhost:5000/"
 export const fetchDocuments =  (sex=null, timeLapse="year") => fetchData("documents", timeLapse, sex)
 export const fetchArticles =   (sex=null, timeLapse="year") => fetchData("articles", timeLapse, sex)
 export const fetchIsbn =       (sex=null, timeLapse="year") => fetchData("isbn", timeLapse, sex)
+export const fetchHumanindex = (sex=null, timeLapse="year") => fetchData("humanindex", timeLapse, sex)
 export const fetchProjects =         (sex=null) => fetchData("proyectos", "", sex)
 export const fetchPatents =          () => fetchData("patentes", "", null)
 

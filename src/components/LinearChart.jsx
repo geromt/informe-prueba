@@ -5,7 +5,6 @@ import { Button, Dropdown } from "flowbite-react"
 import { PropTypes } from "prop-types"
 import { CustomTooltip } from "./CustomTooltip";
 import { chartToSVG, dataToTxt } from "../services/chartsServices";
-//import { MyDropdown } from "./MyDropdown";
 
 export function LinearChart({title, data, colors, onDataSelected }){
     LinearChart.propTypes = {

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { LinearChart } from './components/LinearChart'
 import { BarLineChart } from './components/BarLineChart';
 import { MainButton } from './components/MainButton';
-import { fetchDocuments, fetchArticles, fetchIsbn, fetchProjects, fetchPatents } from './services/fetchServices';
+import { fetchDocuments, fetchArticles, fetchIsbn, fetchHumanindex, fetchProjects, fetchPatents } from './services/fetchServices';
 import './App.css'
 import siiaLogo from './assets/siia_sm.png'
 import githubLogo from './assets/github.svg'
@@ -16,6 +16,7 @@ function App() {
   const [documents, setDocuments] = useState(null)
   const [articles, setArticles] = useState(null)
   const [isbn, setIsbn] = useState(null)
+  const [humanindex, setHumanindex] = useState(null)
   const [projects, setProjects] = useState(null)
   const [patents, setPatents] = useState(null)
   const [mode, setMode] = useState('light')
@@ -29,6 +30,7 @@ function App() {
   const refrestDocumentsData = (sex=null, timeLapse="year") => fetchDocuments(sex, timeLapse).then(setDocuments);
   const refreshArticlesData = (sex=null, timeLapse="year") => fetchArticles(sex, timeLapse).then(setArticles);
   const refreshIsbnData = (sex=null, timeLapse="year") => fetchIsbn(sex, timeLapse).then(setIsbn);
+  const refrestHumanIndex = (sex=null, timeLapse="year") => fetchHumanindex(sex, timeLapse).then(setHumanindex);
   const refreshProjectsData = (sex=null) => fetchProjects(sex).then(setProjects);
   const refreshPatents = () => fetchPatents().then(setPatents);
 
@@ -36,6 +38,7 @@ function App() {
     refrestDocumentsData();
     refreshArticlesData();
     refreshIsbnData();
+    refrestHumanIndex();
     refreshProjectsData();
     refreshPatents();
   }, []);
@@ -78,6 +81,9 @@ function App() {
         break;
       case "ISBN":
         refreshIsbnData(sexParam, timeLapse);
+        break;
+      case "Humanindex":
+        refrestHumanIndex(sexParam, timeLapse);
         break;
       case "Proyectos":
         refreshProjectsData(sexParam);
@@ -122,6 +128,7 @@ function App() {
           {documents && <LinearChart title="Documentos" data={documents} colors={colors} onDataSelected={handleDataSelection}/>}
           {articles && <LinearChart title="Artículos" data={articles} colors={colors} onDataSelected={handleDataSelection}/>}
           {isbn && <LinearChart title="ISBN" data={isbn} colors={colors} onDataSelected={handleDataSelection}/>}
+          {humanindex && <LinearChart title="Humanindex" data={humanindex} colors={colors} onDataSelected={handleDataSelection}/>}
           {projects && <BarLineChart title="Proyectos" data={projects} colors={colors} onDataSelected={handleDataSelection}/>}
           {patents && <PatentsTable title="Patentes" data={patents} />}
         </div>
