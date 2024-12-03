@@ -21,7 +21,7 @@ function App() {
   const [participacionesProjects, setParticipacionesProjects] = useState(null)
   const [patents, setPatents] = useState(null)
   const [mode, setMode] = useState('light')
-  const [modeIcon, setModeIcon] = useState(sunSVG)
+  const [modeIcon, setModeIcon] = useState(moonSVG)
   const [graficasScrollValue, setGraficasScrollValue] = useState(0)
   const parallax = useParallax({
     speed: -25,
@@ -49,12 +49,12 @@ function App() {
   const toggleMode = () => {
     if (mode === 'light') {
       setMode('dark');
-      setModeIcon(moonSVG);
+      setModeIcon(sunSVG);
       document.getElementById("root").style["background-color"] = '#242424';
       document.getElementById("root").style["color"] = '#D9FAFF';
     } else {
       setMode('light');
-      setModeIcon(sunSVG);
+      setModeIcon(moonSVG);
       document.getElementById("root").style["background-color"] = '#F8F4E3';
       document.getElementById("root").style["color"] = '#090909';      
     }
