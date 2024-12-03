@@ -52,8 +52,8 @@ export function BarLineChart({title, data, colors, onDataSelected}){
         <div className="bg-white-background dark:bg-dark-background  flex flex-col items-center justify-center 
         w-full h-screen snap-center shrink-0">
             <h1 className="text-white-secondary db-white-background 
-          dark:text-dark-secondary dark:bg-dark-background my-8">{title}</h1>
-            <div className="flex flex-row justify-around w-full my-4">
+          dark:text-dark-secondary dark:bg-dark-background my-4 lg:my-8">{title}</h1>
+            <div className="flex flex-row justify-around w-full my-4 gap-2 lg:gap-0">
             <div className="flex flex-row gap-4 basis-1/2">
                 <Dropdown outline gradientDuoTone="purpleToBlue" className="bg-transparent border-0" label={desdeLabel}>
                     {
@@ -111,9 +111,9 @@ export function BarLineChart({title, data, colors, onDataSelected}){
                     </Dropdown.Item>
                 </Dropdown>
             </div>
-            <div ref={lineChartContainer}>
-            <ResponsiveContainer aspect={2.5} width={1200}>
-            <ComposedChart width={600} height={400} data={dataToChart}  margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+            <div ref={lineChartContainer} className="w-full h-2/3">
+            <ResponsiveContainer width="100%">
+            <ComposedChart height={400} data={dataToChart}  margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                 {
                     data.keys.map(key => {
                         return <Line type="monotone" dataKey={key} stroke="#8884d8" strokeWidth={3} key={key} hide={!showKeys[key]}/>
@@ -132,24 +132,24 @@ export function BarLineChart({title, data, colors, onDataSelected}){
             </ComposedChart>
             </ResponsiveContainer>
             </div>
-            <div className="flex flex-row justify-center gap-12 items-center w-full">
-              <div className="flex flex-row justify-center grow">
+            <div className="flex flex-row justify-center gap-1 lg:gap-12 items-center w-full">
+              <div className="grid grid-cols-3 gap-x-1 lg:flex lg:flex-row justify-center lg:gap-8 grow">
               {
                   data.keys.map(key => {
-                      return <Button gradientDuoTone="purpleToBlue" className="items-center" key={key} onClick={() => handleShowKeys(key)}>
+                      return <Button gradientDuoTone="purpleToBlue" className="items-center h-14 lg:h-auto" key={key} onClick={() => handleShowKeys(key)}>
                           {showKeys[key] ? `Ocultar ${key.toUpperCase()}`: `Mostrar ${key.toUpperCase()}`}
                       </Button>
                   })
               }
               {
                   data.bar_keys.map(key => {
-                      return <Button gradientDuoTone="purpleToBlue" className="items-center" key={key} onClick={() => handleShowKeys(key)}>
+                      return <Button gradientDuoTone="purpleToBlue" className="items-center h-14 lg:h-auto" key={key} onClick={() => handleShowKeys(key)}>
                           {showKeys[key] ? `Ocultar ${key.toUpperCase()}`: `Mostrar ${key.toUpperCase()}`}
                       </Button>
                   })
               }
               </div>
-              <div className="flex flex-col items-center grow-0">
+              <div className="flex flex-col gap-1 items-center grow-0">
                 <Button outline gradientDuoTone="pinkToOrange" onClick={() => chartToSVG(lineChartContainer.current)}>Guardar como SVG</Button>
                 <Button outline gradientDuoTone="pinkToOrange" onClick={() => dataToTxt(dataToChart)}>Guardar como JSON</Button>
               </div>
