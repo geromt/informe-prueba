@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { AreaChart, Area, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts"
 import { range } from "../services/fetchServices"
 import { useEffect, useRef, useState } from "react";
@@ -6,12 +8,21 @@ import { PropTypes } from "prop-types"
 import { CustomTooltip } from "./CustomTooltip";
 import { chartToSVG, dataToTxt } from "../services/chartsServices";
 
-export function LinearChart({title, data, colors, onDataSelected }){
+const CustomizedDot = ({cx, cy, fill, dataKey, onDotClicked}) => {
+  return (
+    <svg x={cx - 10} y={cy - 10} width={20} height={20}>
+      <circle cx="10" cy="10" r="4" fill={fill} onClick={onDotClicked}/>
+    </svg>
+  );
+};
+
+export function LinearChart({title, data, colors, onDataSelected, onActiveDotClicked }){
     LinearChart.propTypes = {
         title: PropTypes.string.isRequired,
         data: PropTypes.object.isRequired,
         colors: PropTypes.array.isRequired,
-        onDataSelected: PropTypes.func.isRequired
+        onDataSelected: PropTypes.func.isRequired,
+        onActiveDotClicked: PropTypes.func.isRequired
     }
     const [dataToChart, setDataToChart] = useState(data.data)
     const [showKeys, setShowKeys] = useState({})
@@ -156,7 +167,8 @@ export function LinearChart({title, data, colors, onDataSelected }){
               {
                   data.keys.map((key, index) => {
                       return <Area type="monotone" dataKey={key} stroke={colors[index]} 
-                      key={key} fillOpacity={1} fill={`url(#color:${index})`} hide={!showKeys[key]}/>
+                      key={key} fillOpacity={1} fill={`url(#color:${index})`} 
+                      activeDot={<CustomizedDot onDotClicked={onActiveDotClicked}/>} hide={!showKeys[key]}/>
                   })
               }
               <CartesianGrid stroke="#ccc" strokeDasharray="3 3"/>

@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { Button, Dropdown } from "flowbite-react"
 import { PropTypes } from "prop-types"
 import { chartToSVG, dataToTxt } from "../services/chartsServices";
+//import { CustomDot } from "./LinearChart";
 
 export function BarLineChart({title, data, colors, onDataSelected}){
     BarLineChart.propTypes = {

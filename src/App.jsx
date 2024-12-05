@@ -11,6 +11,7 @@ import sunSVG from './assets/sun.svg'
 import moonSVG from './assets/moon.svg'
 import { PatentsTable } from './components/PatentsTable';
 import { useParallax } from 'react-scroll-parallax';
+import { Modal } from './components/Modal';
 
 function App() {
   const [documents, setDocuments] = useState(null)
@@ -23,6 +24,7 @@ function App() {
   const [mode, setMode] = useState('light')
   const [modeIcon, setModeIcon] = useState(moonSVG)
   const [graficasScrollValue, setGraficasScrollValue] = useState(0)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const parallax = useParallax({
     speed: -25,
     opacity: [0.25, 0]
@@ -103,6 +105,7 @@ function App() {
 
   return (
     <div id="parent" className={mode}>
+      {isModalOpen && <Modal title={"Super duper modal"} data={patents} onCloseModal={() => setIsModalOpen(false)} />}
       <header className='w-full h-12 mt-2 lg:h-24 flex flex-row bg-transparent align-middle items-center justify-around absolute z-50'>
         <a href="https://web.siia.unam.mx/siia-publico/index.php" target="_blank">
           <img src={siiaLogo} className="logo basis-3/4 lg:basis-1/4" alt="SIIA logo" />
@@ -131,10 +134,10 @@ function App() {
         
         <div className='h-48 lg:h-96 bg-white-background dark:bg-dark-background'></div>
         <div onScroll={handleScroll} id="snap-scroll" className='w-full h-screen snap-y snap-mandatory overflow-x-hidden overflow-y-scroll sticky remove-scroll'>
-          {documents && <LinearChart title="Documentos" data={documents} colors={colors} onDataSelected={handleDataSelection}/>}
-          {articles && <LinearChart title="Artículos" data={articles} colors={colors} onDataSelected={handleDataSelection}/>}
-          {isbn && <LinearChart title="ISBN" data={isbn} colors={colors} onDataSelected={handleDataSelection}/>}
-          {humanindex && <LinearChart title="Humanindex" data={humanindex} colors={colors} onDataSelected={handleDataSelection}/>}
+          {documents && <LinearChart title="Documentos" data={documents} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={() => setIsModalOpen(true)} />}
+          {articles && <LinearChart title="Artículos" data={articles} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={()=>setIsModalOpen(true)}/>}
+          {isbn && <LinearChart title="ISBN" data={isbn} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={()=>setIsModalOpen(true)}/>}
+          {humanindex && <LinearChart title="Humanindex" data={humanindex} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={()=>setIsModalOpen(true)}/>}
           {projects && <BarLineChart title="Proyectos" data={projects} colors={colors} onDataSelected={handleDataSelection}/>}
           {participacionesProjects && <BarLineChart title="Parcitipaciones Proyectos" data={participacionesProjects} colors={colors} onDataSelected={handleDataSelection}/>}
           {patents && <PatentsTable title="Patentes" data={patents} />}
