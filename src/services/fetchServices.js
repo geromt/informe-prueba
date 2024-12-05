@@ -28,6 +28,25 @@ async function fetchData(type, timeLapse, sex=null){
     return data;
 }
 
+export async function fetchDeserializeData(datakey, page, sex=null){
+    let response = null
+    if (sex == null){
+        response = await fetch(`${URL_PREFIX}deserialize/documents/${datakey}/${page}`);
+    } else {
+        if (sex == "M" || sex == "F"){
+            response = await fetch(`${URL_PREFIX}deserialize/documents/${datakey}/${page}?sexo=${sex}`);
+        } else {
+            throw new Error("Sexo no válido");
+        }
+    }
+
+    if (!response.ok)
+        throw new Error(`Failed to fetch data: <type: ${datakey}> <page:${page}>`);
+
+    const data = await response.json();
+    return data;
+}
+
 export function range(size, startAt = 0) {
     return [...Array(size).keys()].map(i => i + startAt);
 }

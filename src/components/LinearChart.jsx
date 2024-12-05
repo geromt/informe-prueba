@@ -9,9 +9,10 @@ import { CustomTooltip } from "./CustomTooltip";
 import { chartToSVG, dataToTxt } from "../services/chartsServices";
 
 const CustomizedDot = ({cx, cy, fill, dataKey, onDotClicked}) => {
+  console.log(dataKey)
   return (
     <svg x={cx - 10} y={cy - 10} width={20} height={20}>
-      <circle cx="10" cy="10" r="4" fill={fill} onClick={onDotClicked}/>
+      <circle cx="10" cy="10" r="4" fill={fill} onClick={() => onDotClicked({datakey:dataKey})}/>
     </svg>
   );
 };
@@ -197,3 +198,5 @@ export function LinearChart({title, data, colors, onDataSelected, onActiveDotCli
         </div>
     )
 }
+
+export default LinearChart;
