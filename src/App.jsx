@@ -32,7 +32,7 @@ function App() {
   const [modeIcon, setModeIcon] = useState(moonSVG)
   const [graficasScrollValue, setGraficasScrollValue] = useState(0)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [modalKey, setModalKey] = useState("")
+  const [modalData, setModalData] = useState({})
   const parallax = useParallax({
     speed: -25,
     opacity: [0.25, 0]
@@ -109,17 +109,16 @@ function App() {
     }
   }
 
-  const handleActiveDotClick = ({datakey}) => {
-      console.log(datakey)
-      setIsModalOpen(true);
-      setModalKey(datakey);
-    };
+  const handleActiveDotClick = ({title, datakey, total, time}) => {
+    setIsModalOpen(true);
+    setModalData({title, datakey, total, time});
+  };
 
   const colors = ['#8A0094',"#00FFC4", "#FF4B14", "#A80874", "#08B2E3", "#2B9720"]
 
   return (
     <div id="parent" className={mode}>
-      {isModalOpen && <Modal title={"Super duper modal"} datakey={modalKey} onCloseModal={() => setIsModalOpen(false)} />}
+      {isModalOpen && <Modal data={modalData} onCloseModal={() => setIsModalOpen(false)} />}
       <header className='w-full h-12 mt-2 lg:h-24 flex flex-row bg-transparent align-middle items-center justify-around absolute z-50'>
         <a href="https://web.siia.unam.mx/siia-publico/index.php" target="_blank">
           <img src={siiaLogo} className="logo basis-3/4 lg:basis-1/4" alt="SIIA logo" />
@@ -149,9 +148,9 @@ function App() {
         <div className='h-48 lg:h-96 bg-white-background dark:bg-dark-background'></div>
         <div onScroll={handleScroll} id="snap-scroll" className='w-full h-screen snap-y snap-mandatory overflow-x-hidden overflow-y-scroll sticky remove-scroll'>
           {documents && <LinearChart title="Documentos" data={documents} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick} />}
-          {articles && <LinearChart title="Artículos" data={articles} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={()=>setIsModalOpen(true)}/>}
-          {isbn && <LinearChart title="ISBN" data={isbn} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={()=>setIsModalOpen(true)}/>}
-          {humanindex && <LinearChart title="Humanindex" data={humanindex} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={()=>setIsModalOpen(true)}/>}
+          {articles && <LinearChart title="Artículos" data={articles} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
+          {isbn && <LinearChart title="ISBN" data={isbn} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
+          {humanindex && <LinearChart title="Humanindex" data={humanindex} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
           {projects && <BarLineChart title="Proyectos" data={projects} colors={colors} onDataSelected={handleDataSelection}/>}
           {participacionesProjects && <BarLineChart title="Parcitipaciones Proyectos" data={participacionesProjects} colors={colors} onDataSelected={handleDataSelection}/>}
           {patents && <PatentsTable title="Patentes" data={patents} />}

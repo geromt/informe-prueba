@@ -2,10 +2,9 @@ import { PropTypes } from 'prop-types';
 import { InfinityTable } from './InfinityTable';
 import { Button } from "flowbite-react";
 
-export function Modal({title, datakey, onCloseModal}){
+export function Modal({data, onCloseModal}){
     Modal.propTypes = {
-        title: PropTypes.string.isRequired,
-        datakey: PropTypes.string.isRequired,
+        data: PropTypes.object.isRequired,
         onCloseModal: PropTypes.func.isRequired
     }
 
@@ -15,7 +14,7 @@ export function Modal({title, datakey, onCloseModal}){
                 <div className='flex w-full justify-end '>
                     <Button gradientMonochrome='failure' className='w-40' onClick={onCloseModal}>Cerrar X</Button>
                 </div>
-                <InfinityTable title={title} datakey={datakey} />
+                <InfinityTable {...data} />
             </div>
         </div>
     )

@@ -4,10 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { fetchDeserializeData } from "../services/fetchServices";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-export function InfinityTable({title, datakey}){
+export function InfinityTable({title, datakey, time, total}){
     InfinityTable.propTypes = {
         title: PropTypes.string.isRequired,
-        datakey: PropTypes.string.isRequired
+        datakey: PropTypes.string.isRequired,
+        time: PropTypes.string.isRequired,
+        total: PropTypes.number.isRequired
     }
     const [items, setItems] = useState([])
     // eslint-disable-next-line no-unused-vars
@@ -35,7 +37,6 @@ export function InfinityTable({title, datakey}){
       fetchDeserializeData(datakey, pageNumber).then(data => {
         setItems(prevItems => [...prevItems, ...data.data]);
         setPageNumber(prevPage => prevPage + 1);
-        console.log(items)
       }).then(setIsLoading(false))
       .catch(error => setError(error))}
 
@@ -49,17 +50,18 @@ export function InfinityTable({title, datakey}){
         <div className="bg-white-background dark:bg-dark-background  flex flex-col items-center justify-center 
         w-full h-full snap-center shrink-0">
           <h1 className="text-white-secondary db-white-background 
-        dark:text-dark-secondary dark:bg-dark-background text-lg my-4 lg:my-4">{title}</h1>
+        dark:text-dark-secondary dark:bg-dark-background text-lg my-4 lg:my-4">{`${title} con ${datakey} del ${time}`}</h1>
           <div className="grid grid-cols-3 gap-4 w-11/12 lg:w-3/4">
             <FloatingLabel ref={tituloInput} label="Título" variant="filled"/>
             <FloatingLabel ref={inventoresInput} label="Inventores" variant="filled"/>
             <Button className="items-center mb-2 mx-2 " onClick={() => console.log("Buscando")}>Buscar</Button>
           </div>
             <div id="scrollableTarget" className="w-full overflow-x-hidden">
-              <InfiniteScroll scrollableTarget="scrollableTarget" dataLength={items.length} next={refreshData} hasMore={true} loader={<p>Loading...</p>} endMessage={<p>No more data to load</p>}>
+              <InfiniteScroll scrollableTarget="scrollableTarget" dataLength={items.length} 
+              next={refreshData} hasMore={items.length < total} loader={<p>Loading...</p>} endMessage={<p>No more data to load</p>}>
                 <Table striped hoverable>
                   <Table.Head>
-                    <Table.HeadCell>i</Table.HeadCell>
+                    <Table.HeadCell>#</Table.HeadCell>
                     <Table.HeadCell>Obra Título</Table.HeadCell>
                     <Table.HeadCell>ObraEditorial</Table.HeadCell>
                     <Table.HeadCell>Titulo</Table.HeadCell>

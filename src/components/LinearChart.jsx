@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { AreaChart, Area, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts"
 import { range } from "../services/fetchServices"
@@ -8,11 +7,10 @@ import { PropTypes } from "prop-types"
 import { CustomTooltip } from "./CustomTooltip";
 import { chartToSVG, dataToTxt } from "../services/chartsServices";
 
-const CustomizedDot = ({cx, cy, fill, dataKey, onDotClicked}) => {
-  console.log(dataKey)
+const CustomizedDot = ({cx, cy, fill, dataKey, payload, title, onDotClicked}) => {
   return (
     <svg x={cx - 10} y={cy - 10} width={20} height={20}>
-      <circle cx="10" cy="10" r="4" fill={fill} onClick={() => onDotClicked({datakey:dataKey})}/>
+      <circle cx="10" cy="10" r="4" fill={fill} onClick={() => onDotClicked({title: title, time:payload.name, datakey:dataKey, total:payload[dataKey]})} />
     </svg>
   );
 };
@@ -169,7 +167,7 @@ export function LinearChart({title, data, colors, onDataSelected, onActiveDotCli
                   data.keys.map((key, index) => {
                       return <Area type="monotone" dataKey={key} stroke={colors[index]} 
                       key={key} fillOpacity={1} fill={`url(#color:${index})`} 
-                      activeDot={<CustomizedDot onDotClicked={onActiveDotClicked}/>} hide={!showKeys[key]}/>
+                      activeDot={<CustomizedDot title={title} onDotClicked={onActiveDotClicked}/>} hide={!showKeys[key]}/>
                   })
               }
               <CartesianGrid stroke="#ccc" strokeDasharray="3 3"/>
