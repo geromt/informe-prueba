@@ -109,9 +109,9 @@ function App() {
     }
   }
 
-  const handleActiveDotClick = ({title, datakey, total, time}) => {
+  const handleActiveDotClick = ({title, timeLapse, time, dataKey, sex, total}) => {
     setIsModalOpen(true);
-    setModalData({title, datakey, total, time});
+    setModalData({title, timeLapse, time, dataKey, sex, total});
   };
 
   const colors = ['#8A0094',"#00FFC4", "#FF4B14", "#A80874", "#08B2E3", "#2B9720"]

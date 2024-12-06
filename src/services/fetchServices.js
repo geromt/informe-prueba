@@ -9,6 +9,7 @@ export const fetchProjects =         (sex=null) => fetchData("proyectos", "", se
 export const fetchParticipacionesProjects =  (sex=null) => fetchData("participaciones-proyectos", "", sex)
 export const fetchPatents =          () => fetchData("patentes", "", null)
 
+const dataTypeMapping = {"Documentos": "documents", "Artículos": "articles", "ISBN": "isbn", "Humanindex": "humanindex"}
 async function fetchData(type, timeLapse, sex=null){
     let response = null
     if (sex == null){
@@ -28,22 +29,24 @@ async function fetchData(type, timeLapse, sex=null){
     return data;
 }
 
-export async function fetchDeserializeData(datakey, page, sex=null){
-    let response = null
-    if (sex == null){
-        response = await fetch(`${URL_PREFIX}deserialize/documents/${datakey}/${page}`);
-    } else {
-        if (sex == "M" || sex == "F"){
-            response = await fetch(`${URL_PREFIX}deserialize/documents/${datakey}/${page}?sexo=${sex}`);
-        } else {
-            throw new Error("Sexo no válido");
-        }
+export async function fetchDeserializeData(dataType, timeLapse, time, dataKey, page, sex=null, title=null){
+    let fetchURL = `${URL_PREFIX}deserialize/${dataTypeMapping[dataType]}/${timeLapse}/${time}/${dataKey}/${page}`
+    if (sex != null || title != null){
+        fetchURL += `?`
+        if (sex != null)
+            if (sex == "M" || sex == "F")
+                fetchURL += `sexo=${sex}`
+        if (title != null)
+            fetchURL += `titulo=${title}`
     }
 
+    const response = await fetch(fetchURL);
+
     if (!response.ok)
-        throw new Error(`Failed to fetch data: <type: ${datakey}> <page:${page}>`);
+        throw new Error(`Failed to fetch data: <type: ${dataKey}> <page:${page}>`);
 
     const data = await response.json();
+    console.log(data)
     return data;
 }
 
