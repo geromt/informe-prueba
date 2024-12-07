@@ -30,15 +30,19 @@ async function fetchData(type, timeLapse, sex=null){
 }
 
 export async function fetchDeserializeData(dataType, timeLapse, time, dataKey, page, sex=null, title=null){
+    console.log(title)
     let fetchURL = `${URL_PREFIX}deserialize/${dataTypeMapping[dataType]}/${timeLapse}/${time}/${dataKey}/${page}`
     if (sex != null || title != null){
         fetchURL += `?`
         if (sex != null)
             if (sex == "M" || sex == "F")
                 fetchURL += `sexo=${sex}`
-        if (title != null)
+        if (title != null){
+            console.log(title)
             fetchURL += `titulo=${title}`
+        }
     }
+    console.log(fetchURL)
 
     const response = await fetch(fetchURL);
 

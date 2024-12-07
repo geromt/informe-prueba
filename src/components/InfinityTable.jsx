@@ -22,12 +22,17 @@ export function InfinityTable({title, timeLapse, time, dataKey, sex, total}){
     const [titleSearch, setTitleSearch] = useState(null);
     const tituloInput = useRef(null);
 
-    // const filterData = () => {
-    //   const titulo = tituloInput.current.value
-    //   fetchDeserializeData()
+    const filterData = () => {
+      const titulo = tituloInput.current.value
+      console.log(titulo)
       
-    //   setDataToTable(filteredData)
-    // }
+      fetchDeserializeData(title, timeLapse, time, dataKey, 0, sex, titulo)
+      .then(data => {
+        setItems(data.data);
+        setTitleSearch(titulo);
+        setPageNumber(1);
+      })
+    }
 
     const refreshData = () => {
       setIsLoading(true);
@@ -51,7 +56,7 @@ export function InfinityTable({title, timeLapse, time, dataKey, sex, total}){
         dark:text-dark-secondary dark:bg-dark-background text-lg my-4 lg:my-4">{`${title} con ${dataKey} del ${time}`}</h1>
           <div className="grid grid-cols-3 gap-4 w-11/12 lg:w-3/4">
             <FloatingLabel ref={tituloInput} label="Título" variant="filled"/>
-            <Button className="items-center mb-2 mx-2 " onClick={() => console.log("Buscando")}>Buscar</Button>
+            <Button className="items-center mb-2 mx-2 " onClick={filterData}>Buscar</Button>
           </div>
             <div id="scrollableTarget" className="w-full overflow-x-hidden">
               <InfiniteScroll scrollableTarget="scrollableTarget" dataLength={items.length} 
@@ -63,17 +68,17 @@ export function InfinityTable({title, timeLapse, time, dataKey, sex, total}){
                       (
                         <>
                         <Table.HeadCell>#</Table.HeadCell>
+                        <Table.HeadCell>Titulo</Table.HeadCell>
                         <Table.HeadCell>Revista Título</Table.HeadCell>
                         <Table.HeadCell>Revista Editorial</Table.HeadCell>
-                        <Table.HeadCell>Titulo</Table.HeadCell>
                         <Table.HeadCell>Fecha</Table.HeadCell>
                         </>
                       ) : (
                         <>
                         <Table.HeadCell>#</Table.HeadCell>
+                        <Table.HeadCell>Titulo</Table.HeadCell>
                         <Table.HeadCell>Obra Título</Table.HeadCell>
                         <Table.HeadCell>ObraEditorial</Table.HeadCell>
-                        <Table.HeadCell>Titulo</Table.HeadCell>
                         <Table.HeadCell>Fecha</Table.HeadCell>
                         </>
                       )
@@ -82,13 +87,13 @@ export function InfinityTable({title, timeLapse, time, dataKey, sex, total}){
                   <Table.Body>
                   {
                     title == "Artículos" ? (
-                      items.map(({revistaTitulo, revistaEditorial, titulo, fechaPublicacion}, index) => {
+                      items.map(({revistaTitulo, revistaEditorial, titulo, fechaPublicacion, accesoElectronico}, index) => {
                         return(
                           <Table.Row className="border-y-white-primary border-2" key={index}>
                             <Table.Cell className="text-white-secondary">{index + 1}</Table.Cell>
+                            <Table.Cell className="text-white-text dark:text-dark-secondary"><a href={accesoElectronico}>{titulo}</a></Table.Cell>
                             <Table.Cell className="text-white-text dark:text-dark-secondary">{revistaTitulo}</Table.Cell>
                             <Table.Cell className="text-white-text dark:text-dark-secondary">{revistaEditorial}</Table.Cell>
-                            <Table.Cell className="text-white-text dark:text-dark-secondary">{titulo}</Table.Cell>
                             <Table.Cell className="text-white-text dark:text-dark-secondary">{fechaPublicacion}</Table.Cell>
                           </Table.Row>
                         )
@@ -98,9 +103,9 @@ export function InfinityTable({title, timeLapse, time, dataKey, sex, total}){
                       return(
                         <Table.Row className="border-y-white-primary border-2" key={index}>
                           <Table.Cell className="text-white-secondary">{index + 1}</Table.Cell>
-                          <Table.Cell className="text-white-text dark:text-dark-secondary"><a href={accesoElectronico}>{obraTitulo}</a></Table.Cell>
+                          <Table.Cell className="text-white-text dark:text-dark-secondary"><a href={accesoElectronico}>{titulo}</a></Table.Cell>
                           <Table.Cell className="text-white-text dark:text-dark-secondary">{obraEditorial}</Table.Cell>
-                          <Table.Cell className="text-white-text dark:text-dark-secondary">{titulo}</Table.Cell>
+                          <Table.Cell className="text-white-text dark:text-dark-secondary">{obraTitulo}</Table.Cell>
                           <Table.Cell className="text-white-text dark:text-dark-secondary">{fechaPublicacion}</Table.Cell>
                         </Table.Row>
                       )
