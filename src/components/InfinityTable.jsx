@@ -1,4 +1,4 @@
-import { FloatingLabel, Table, Button } from "flowbite-react";
+import { FloatingLabel, Table, Button, TableHead } from "flowbite-react";
 import { PropTypes } from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import { fetchDeserializeData } from "../services/fetchServices";
@@ -18,7 +18,6 @@ export function InfinityTable({title, timeLapse, time, dataKey, sex, total}){
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [pageNumber, setPageNumber] = useState(0);
-    // eslint-disable-next-line no-unused-vars
     const [titleSearch, setTitleSearch] = useState(null);
     const tituloInput = useRef(null);
 
@@ -49,6 +48,80 @@ export function InfinityTable({title, timeLapse, time, dataKey, sex, total}){
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const renderHead = () => {
+      if (title == "Artículos"){
+        return (
+          <Table.Head>
+            <Table.HeadCell>#</Table.HeadCell>
+            <Table.HeadCell>Titulo</Table.HeadCell>
+            <Table.HeadCell>Revista Título</Table.HeadCell>
+            <Table.HeadCell>Revista Editorial</Table.HeadCell>
+            <Table.HeadCell>Fecha</Table.HeadCell>
+          </Table.Head>
+        )
+      } else if (title == "Proyectos" || title == "Participaciones Proyectos") {
+        return (
+          <Table.Head>
+            <Table.HeadCell>#</Table.HeadCell>
+            <Table.HeadCell>Nombre</Table.HeadCell>
+            <Table.HeadCell>Situación</Table.HeadCell>
+            <Table.HeadCell>Área</Table.HeadCell>
+            <Table.HeadCell>Fecha Situación</Table.HeadCell>
+          </Table.Head>
+        )
+      } else {
+        return (
+          <TableHead>
+            <Table.HeadCell>#</Table.HeadCell>
+            <Table.HeadCell>Titulo</Table.HeadCell>
+            <Table.HeadCell>Obra Título</Table.HeadCell>
+            <Table.HeadCell>ObraEditorial</Table.HeadCell>
+            <Table.HeadCell>Fecha</Table.HeadCell>
+          </TableHead>
+        )
+      } 
+    }
+
+    const renderRows = () => {
+      if (title == "Artículos"){
+        return items.map(({revistaTitulo, revistaEditorial, titulo, fechaPublicacion, accesoElectronico}, index) => {
+          return(
+            <Table.Row className="border-y-white-primary border-2" key={index}>
+              <Table.Cell className="text-white-secondary">{index + 1}</Table.Cell>
+              <Table.Cell className="text-white-text dark:text-dark-secondary"><a href={accesoElectronico}>{titulo}</a></Table.Cell>
+              <Table.Cell className="text-white-text dark:text-dark-secondary">{revistaTitulo}</Table.Cell>
+              <Table.Cell className="text-white-text dark:text-dark-secondary">{revistaEditorial}</Table.Cell>
+              <Table.Cell className="text-white-text dark:text-dark-secondary">{fechaPublicacion}</Table.Cell>
+            </Table.Row>
+          )
+        })
+      } else if (title == "Proyectos" || title == "Participaciones Proyectos") {
+        return items.map(({nombre, situacion, area, fechaSituacion}, index) => {
+          return(
+            <Table.Row className="border-y-white-primary border-2" key={index}>
+              <Table.Cell className="text-white-secondary">{index + 1}</Table.Cell>
+              <Table.Cell className="text-white-text dark:text-dark-secondary">{nombre}</Table.Cell>
+              <Table.Cell className="text-white-text dark:text-dark-secondary">{situacion}</Table.Cell>
+              <Table.Cell className="text-white-text dark:text-dark-secondary">{area}</Table.Cell>
+              <Table.Cell className="text-white-text dark:text-dark-secondary">{fechaSituacion}</Table.Cell>
+            </Table.Row>
+          )
+        })
+      } else {
+        return items.map(({obraTitulo, obraEditorial, titulo, fechaPublicacion, accesoElectronico}, index) => {
+          return(
+            <Table.Row className="border-y-white-primary border-2" key={index}>
+              <Table.Cell className="text-white-secondary">{index + 1}</Table.Cell>
+              <Table.Cell className="text-white-text dark:text-dark-secondary"><a href={accesoElectronico}>{titulo}</a></Table.Cell>
+              <Table.Cell className="text-white-text dark:text-dark-secondary">{obraEditorial}</Table.Cell>
+              <Table.Cell className="text-white-text dark:text-dark-secondary">{obraTitulo}</Table.Cell>
+              <Table.Cell className="text-white-text dark:text-dark-secondary">{fechaPublicacion}</Table.Cell>
+            </Table.Row>
+          )
+        })
+      }
+    }
+
     return (
         <div className="bg-white-background dark:bg-dark-background  flex flex-col items-center justify-center 
         w-full h-full snap-center shrink-0">
@@ -62,56 +135,9 @@ export function InfinityTable({title, timeLapse, time, dataKey, sex, total}){
               <InfiniteScroll scrollableTarget="scrollableTarget" dataLength={items.length} 
               next={refreshData} hasMore={items.length < total} loader={<p>Loading...</p>} endMessage={<p>No more data to load</p>}>
                 <Table striped hoverable>
-                  <Table.Head>
-                  {
-                    title == "Artículos" ?
-                      (
-                        <>
-                        <Table.HeadCell>#</Table.HeadCell>
-                        <Table.HeadCell>Titulo</Table.HeadCell>
-                        <Table.HeadCell>Revista Título</Table.HeadCell>
-                        <Table.HeadCell>Revista Editorial</Table.HeadCell>
-                        <Table.HeadCell>Fecha</Table.HeadCell>
-                        </>
-                      ) : (
-                        <>
-                        <Table.HeadCell>#</Table.HeadCell>
-                        <Table.HeadCell>Titulo</Table.HeadCell>
-                        <Table.HeadCell>Obra Título</Table.HeadCell>
-                        <Table.HeadCell>ObraEditorial</Table.HeadCell>
-                        <Table.HeadCell>Fecha</Table.HeadCell>
-                        </>
-                      )
-                  }
-                  </Table.Head>
+                  {renderHead()}
                   <Table.Body>
-                  {
-                    title == "Artículos" ? (
-                      items.map(({revistaTitulo, revistaEditorial, titulo, fechaPublicacion, accesoElectronico}, index) => {
-                        return(
-                          <Table.Row className="border-y-white-primary border-2" key={index}>
-                            <Table.Cell className="text-white-secondary">{index + 1}</Table.Cell>
-                            <Table.Cell className="text-white-text dark:text-dark-secondary"><a href={accesoElectronico}>{titulo}</a></Table.Cell>
-                            <Table.Cell className="text-white-text dark:text-dark-secondary">{revistaTitulo}</Table.Cell>
-                            <Table.Cell className="text-white-text dark:text-dark-secondary">{revistaEditorial}</Table.Cell>
-                            <Table.Cell className="text-white-text dark:text-dark-secondary">{fechaPublicacion}</Table.Cell>
-                          </Table.Row>
-                        )
-                      })
-                    ) : (
-                    items.map(({obraTitulo, obraEditorial, titulo, fechaPublicacion, accesoElectronico}, index) => {
-                      return(
-                        <Table.Row className="border-y-white-primary border-2" key={index}>
-                          <Table.Cell className="text-white-secondary">{index + 1}</Table.Cell>
-                          <Table.Cell className="text-white-text dark:text-dark-secondary"><a href={accesoElectronico}>{titulo}</a></Table.Cell>
-                          <Table.Cell className="text-white-text dark:text-dark-secondary">{obraEditorial}</Table.Cell>
-                          <Table.Cell className="text-white-text dark:text-dark-secondary">{obraTitulo}</Table.Cell>
-                          <Table.Cell className="text-white-text dark:text-dark-secondary">{fechaPublicacion}</Table.Cell>
-                        </Table.Row>
-                      )
-                    })
-                  )
-                  }
+                  {renderRows()}
                   </Table.Body>
                 </Table>
               </InfiniteScroll>

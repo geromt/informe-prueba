@@ -1,17 +1,42 @@
+/* eslint-disable react/prop-types */
 import { ComposedChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar, ResponsiveContainer } from "recharts"
 import { range } from "../services/fetchServices"
 import { useEffect, useState, useRef } from "react";
 import { Button, Dropdown } from "flowbite-react"
 import { PropTypes } from "prop-types"
 import { chartToSVG, dataToTxt } from "../services/chartsServices";
-//import { CustomDot } from "./LinearChart";
 
-export function BarLineChart({title, data, colors, onDataSelected}){
+
+const CustomizedDot = ({cx, cy, fill, dataKey, payload, title, timeLapse, sex, onDotClicked}) => {
+    return (
+      <svg x={cx - 10} y={cy - 10} width={20} height={20}>
+        <circle cx="10" cy="10" r="4" fill={fill} onClick={() => onDotClicked({title: title, timeLapse:timeLapse, time:payload.name, dataKey:dataKey, sex:sex, total:payload[dataKey]})} />
+      </svg>
+    );
+  };
+
+  const getPath = (x, y, width, height) => (
+    `M${x},${y + height}
+     L${x},${y}
+     L${x + width},${y}
+     L${x + width},${y + height}
+     Z`
+  );
+
+const CustomizedBar = ({x, y, width, height, fill, dataKey, payload, title, timeLapse, sex, onDotClicked}) => {
+    return (
+        <path d={getPath(x, y, width, height)} stroke="none" fill={fill} onClick={() => onDotClicked({title: title, timeLapse:timeLapse, time:payload.name, dataKey:dataKey, sex:sex, total:payload[dataKey]})} />
+    );
+};
+
+
+export function BarLineChart({title, data, colors, onDataSelected, onActiveDotClicked}){
     BarLineChart.propTypes = {
         title: PropTypes.string.isRequired,
         data: PropTypes.object.isRequired,
         colors: PropTypes.array.isRequired,
-        onDataSelected: PropTypes.func.isRequired
+        onDataSelected: PropTypes.func.isRequired,
+        onActiveDotClicked: PropTypes.func.isRequired
     }
     const [dataToChart, setDataToChart] = useState(data.data)
     const [showKeys, setShowKeys] = useState({})
@@ -20,6 +45,7 @@ export function BarLineChart({title, data, colors, onDataSelected}){
     const [desdeLabel, setDesdeLabel] = useState(`Desde: ${data.from}`)
     const [hastaLabel, setHastaLabel] = useState(`Hasta: ${data.to}`)
     const [sexoLabel, setSexoLabel] = useState(`Sexo: Ambos`)
+    const [sexo, setSexo] = useState("Ambos")
     const lineChartContainer = useRef(null)
 
     const handleShowKeys = (key) => {
@@ -92,6 +118,7 @@ export function BarLineChart({title, data, colors, onDataSelected}){
                     <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
                     onClick={() => {
                         setSexoLabel(`Sexo: Ambos`);
+                        setSexo("Ambos");
                         onDataSelected("Ambos", "year", title)
                     }}>
                     Ambos
@@ -99,6 +126,7 @@ export function BarLineChart({title, data, colors, onDataSelected}){
                     <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105"
                     onClick={() => {
                         setSexoLabel(`Sexo: Masculino`);
+                        setSexo("M")
                         onDataSelected("M", "year", title)
                         }}>
                         Masculino
@@ -106,6 +134,7 @@ export function BarLineChart({title, data, colors, onDataSelected}){
                     <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
                     onClick={() => {
                         setSexoLabel(`Sexo: Femenino`);
+                        setSexo("F");
                         onDataSelected("F", "year", title);
                     }}>
                     Femenino
@@ -117,13 +146,14 @@ export function BarLineChart({title, data, colors, onDataSelected}){
             <ComposedChart height={400} data={dataToChart}  margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                 {
                     data.keys.map(key => {
-                        return <Line type="monotone" dataKey={key} stroke="#8884d8" strokeWidth={3} key={key} hide={!showKeys[key]}/>
+                        return <Line type="monotone" dataKey={key} stroke="#8884d8" strokeWidth={3} key={key}  hide={!showKeys[key]}
+                        activeDot={<CustomizedDot title={title} timeLapse={"year"} sex={sexo} onDotClicked={onActiveDotClicked}/>}/>
                     })
                 }
                 {
                     data.bar_keys.map((key, index) => {
-                        return <Bar dataKey={key} fill={colors[index]} key={key} hide={!showKeys[key]}/>
-                    })
+                        return <Bar dataKey={key} fill={colors[index]} key={key} hide={!showKeys[key]}
+                        shape={<CustomizedBar title={title} timeLapse={"year"} sex={sexo} onDotClicked={onActiveDotClicked}/>}/>})
                 }
                 <CartesianGrid stroke="#ccc" strokeDasharray="5 5"/>
                 <XAxis dataKey="name" />

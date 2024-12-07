@@ -24,6 +24,7 @@ export function PatentsTable({title, data}){
     }
 
     useEffect(() => {
+      console.log(dataToTable)
       filterData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

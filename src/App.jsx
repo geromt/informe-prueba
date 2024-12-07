@@ -9,6 +9,7 @@ import {
   fetchHumanindex, 
   fetchProjects, 
   fetchPatents, 
+  fetchPatentsSection,
   fetchParticipacionesProjects } from './services/fetchServices';
 import './App.css'
 import siiaLogo from './assets/siia_sm.png'
@@ -19,6 +20,7 @@ import moonSVG from './assets/moon.svg'
 import { PatentsTable } from './components/PatentsTable';
 import { useParallax } from 'react-scroll-parallax';
 import { Modal } from './components/Modal';
+import { PatentsSwitchChart } from './components/PatentsSwithChart';
 
 function App() {
   const [documents, setDocuments] = useState(null)
@@ -28,6 +30,7 @@ function App() {
   const [projects, setProjects] = useState(null)
   const [participacionesProjects, setParticipacionesProjects] = useState(null)
   const [patents, setPatents] = useState(null)
+  const [patentsSections, setPatentsSections] = useState(null)
   const [mode, setMode] = useState('light')
   const [modeIcon, setModeIcon] = useState(moonSVG)
   const [graficasScrollValue, setGraficasScrollValue] = useState(0)
@@ -45,6 +48,7 @@ function App() {
   const refreshProjectsData = (sex=null) => fetchProjects(sex).then(setProjects);
   const refreshParticipacionesProjects = (sex=null) => fetchParticipacionesProjects(sex).then(setParticipacionesProjects);
   const refreshPatents = () => fetchPatents().then(setPatents);
+  const refreshPatentsSection = () => fetchPatentsSection().then(setPatentsSections);
 
   useEffect(() => {
     refrestDocumentsData();
@@ -54,6 +58,7 @@ function App() {
     refreshProjectsData();
     refreshParticipacionesProjects();
     refreshPatents();
+    refreshPatentsSection();
   }, []);
 
   const toggleMode = () => {
@@ -151,8 +156,9 @@ function App() {
           {articles && <LinearChart title="Artículos" data={articles} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
           {isbn && <LinearChart title="ISBN" data={isbn} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
           {humanindex && <LinearChart title="Humanindex" data={humanindex} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
-          {projects && <BarLineChart title="Proyectos" data={projects} colors={colors} onDataSelected={handleDataSelection}/>}
-          {participacionesProjects && <BarLineChart title="Parcitipaciones Proyectos" data={participacionesProjects} colors={colors} onDataSelected={handleDataSelection}/>}
+          {projects && <BarLineChart title="Proyectos" data={projects} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
+          {participacionesProjects && <BarLineChart title="Participaciones Proyectos" data={participacionesProjects} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
+          {patentsSections && <PatentsSwitchChart title="Patente por secciones" data={patentsSections} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
           {patents && <PatentsTable title="Patentes" data={patents} />}
         </div>
       </main>

@@ -8,8 +8,15 @@ export const fetchHumanindex = (sex=null, timeLapse="year") => fetchData("humani
 export const fetchProjects =         (sex=null) => fetchData("proyectos", "", sex)
 export const fetchParticipacionesProjects =  (sex=null) => fetchData("participaciones-proyectos", "", sex)
 export const fetchPatents =          () => fetchData("patentes", "", null)
+export const fetchPatentsSection = () => fetchData("patentes", "count")
 
-const dataTypeMapping = {"Documentos": "documents", "Artículos": "articles", "ISBN": "isbn", "Humanindex": "humanindex"}
+const dataTypeMapping = {"Documentos": "documents", 
+    "Artículos": "articles", 
+    "ISBN": "isbn", 
+    "Humanindex": "humanindex", 
+    "Proyectos": "projects", 
+    "Participaciones Proyectos": "participaciones-projects"}
+
 async function fetchData(type, timeLapse, sex=null){
     let response = null
     if (sex == null){
