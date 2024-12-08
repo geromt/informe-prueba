@@ -85,37 +85,40 @@ export function InfinityTable({title, timeLapse, time, dataKey, sex, total}){
     const renderRows = () => {
       if (title == "Artículos"){
         return items.map(({revistaTitulo, revistaEditorial, titulo, fechaPublicacion, accesoElectronico}, index) => {
+          const fecha = new Date(fechaPublicacion);
           return(
-            <Table.Row className="border-y-white-primary border-2" key={index}>
-              <Table.Cell className="text-white-secondary">{index + 1}</Table.Cell>
+            <Table.Row className="border-y-blue-300 border-y-2 dark:border-0" key={index}>
+              <Table.Cell className="text-blue-800 dark:text-blue-300">{index + 1}</Table.Cell>
               <Table.Cell className="text-white-text dark:text-dark-secondary"><a href={accesoElectronico}>{titulo}</a></Table.Cell>
               <Table.Cell className="text-white-text dark:text-dark-secondary">{revistaTitulo}</Table.Cell>
               <Table.Cell className="text-white-text dark:text-dark-secondary">{revistaEditorial}</Table.Cell>
-              <Table.Cell className="text-white-text dark:text-dark-secondary">{fechaPublicacion}</Table.Cell>
+              <Table.Cell className="text-white-text dark:text-dark-secondary">{fecha.toLocaleDateString()}</Table.Cell>
             </Table.Row>
           )
         })
       } else if (title == "Proyectos" || title == "Participaciones Proyectos") {
         return items.map(({nombre, situacion, area, fechaSituacion}, index) => {
+          const fecha = new Date(fechaSituacion);
           return(
-            <Table.Row className="border-y-white-primary border-2" key={index}>
-              <Table.Cell className="text-white-secondary">{index + 1}</Table.Cell>
+            <Table.Row className="border-y-blue-300 border-y-2 dark:border-0" key={index}>
+              <Table.Cell className="text-blue-800 dark:text-blue-300">{index + 1}</Table.Cell>
               <Table.Cell className="text-white-text dark:text-dark-secondary">{nombre}</Table.Cell>
               <Table.Cell className="text-white-text dark:text-dark-secondary">{situacion}</Table.Cell>
               <Table.Cell className="text-white-text dark:text-dark-secondary">{area}</Table.Cell>
-              <Table.Cell className="text-white-text dark:text-dark-secondary">{fechaSituacion}</Table.Cell>
+              <Table.Cell className="text-white-text dark:text-dark-secondary">{fecha.toLocaleDateString()}</Table.Cell>
             </Table.Row>
           )
         })
       } else {
         return items.map(({obraTitulo, obraEditorial, titulo, fechaPublicacion, accesoElectronico}, index) => {
+          const fecha = new Date(fechaPublicacion);
           return(
-            <Table.Row className="border-y-white-primary border-2" key={index}>
-              <Table.Cell className="text-white-secondary">{index + 1}</Table.Cell>
+            <Table.Row className="border-y-blue-300 border-y-2 dark:border-0" key={index}>
+              <Table.Cell className="text-blue-800 dark:text-blue-300">{index + 1}</Table.Cell>
               <Table.Cell className="text-white-text dark:text-dark-secondary"><a href={accesoElectronico}>{titulo}</a></Table.Cell>
               <Table.Cell className="text-white-text dark:text-dark-secondary">{obraEditorial}</Table.Cell>
               <Table.Cell className="text-white-text dark:text-dark-secondary">{obraTitulo}</Table.Cell>
-              <Table.Cell className="text-white-text dark:text-dark-secondary">{fechaPublicacion}</Table.Cell>
+              <Table.Cell className="text-white-text dark:text-dark-secondary">{fecha.toLocaleDateString()}</Table.Cell>
             </Table.Row>
           )
         })
@@ -123,13 +126,13 @@ export function InfinityTable({title, timeLapse, time, dataKey, sex, total}){
     }
 
     return (
-        <div className="bg-white-background dark:bg-dark-background  flex flex-col items-center justify-center 
+        <div className="bg-transparent  flex flex-col items-center justify-center 
         w-full h-full snap-center shrink-0">
-          <h1 className="text-white-secondary db-white-background 
-        dark:text-dark-secondary dark:bg-dark-background text-lg my-4 lg:my-4">{`${title} con ${dataKey} del ${time}`}</h1>
-          <div className="grid grid-cols-3 gap-4 w-11/12 lg:w-3/4">
-            <FloatingLabel ref={tituloInput} label="Título" variant="filled"/>
-            <Button className="items-center mb-2 mx-2 " onClick={filterData}>Buscar</Button>
+          <h1 className="text-neutral-600 db-transparent
+        dark:text-neutral-500 text-lg font-nunito my-4 lg:mb-2">{`${title} con ${dataKey} del ${time}`}</h1>
+          <div className="grid grid-cols-2 pl-36 justify-stretch gap-4 w-11/12 lg:w-3/4">
+            <FloatingLabel ref={tituloInput} className="bg-neutral-100 dark:bg-neutral-900/20" label="Título" variant="filled"/>
+            <Button pill color="gray" className=" items-center mb-2 mx-2 lg:w-32 shadow-sm shadow-blue-800" onClick={filterData}>Buscar</Button>
           </div>
             <div id="scrollableTarget" className="w-full overflow-x-hidden">
               <InfiniteScroll scrollableTarget="scrollableTarget" dataLength={items.length} 
