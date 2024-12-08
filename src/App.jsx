@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LinearChart } from './components/LinearChart'
 import { BarLineChart } from './components/BarLineChart';
-import { MainButton } from './components/MainButton';
+//import { MainButton } from './components/MainButton';
 import { 
   fetchDocuments, 
   fetchArticles, 
@@ -21,6 +21,7 @@ import { PatentsTable } from './components/PatentsTable';
 import { useParallax } from 'react-scroll-parallax';
 import { Modal } from './components/Modal';
 import { PatentsSwitchChart } from './components/PatentsSwithChart';
+import { Button } from 'flowbite-react';
 
 function App() {
   const [documents, setDocuments] = useState(null)
@@ -124,11 +125,11 @@ function App() {
   return (
     <div id="parent" className={mode}>
       {isModalOpen && <Modal data={modalData} onCloseModal={() => setIsModalOpen(false)} />}
-      <header className='w-full h-12 mt-2 lg:h-24 flex flex-row bg-transparent align-middle items-center justify-around absolute z-50'>
+      <header className='w-full h-12 mt-2 lg:h-24 flex flex-row bg-transparent align-middle items-center justify-between absolute z-50'>
         <a href="https://web.siia.unam.mx/siia-publico/index.php" target="_blank">
           <img src={siiaLogo} className="logo basis-3/4 lg:basis-1/4" alt="SIIA logo" />
         </a>
-        <h2 className='collapse lg:visible text-center text-2xl basis-auto font-mono text-white-secondary dark:text-dark-secondary'>Sistema Integral de Información Académica</h2>
+        <h2 className='collapse lg:visible text-center text-2xl basis-auto font-nunita text-neutral-500 dark:text-dark-secondary'>Sistema Integral de Información Académica</h2>
         <div className='basis-1/6 flex flex-row'>
           <a href="https://github.com/geromt/informe-prueba" target="_blank" className='h-24 w-24'>
             <img src={githubLogo} className='w-full h-full p-6 hover:scale-105' alt="Github logo" />
@@ -139,18 +140,38 @@ function App() {
         </div>
       </header>
       <main>
-        <div id="main-screen" className="relative h-screen flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-4 lg:gap-0">
+        <div id="main-screen" className="relative h-screen flex flex-col lg:flex-col items-center justify-center lg:justify-center gap-4 lg:gap-0">
           <img ref={parallax.ref} src={facMedicina} className="absolute w-full h-full object-cover" alt="Facultad de Medicina" />
-          <h1 className='lg:basis-full text-white-secondary underline dark:text-dark-primary font-bold text-7xl'>Facultad de Medicina</h1>
-          <div className='flex flex-col basis-80 h-2/3 justify-center z-10 right-0 flex-initial'>
+          
+          <h1 className=' font-nunito text-neutral-600 underline dark:text-neutral-400 font-bold text-7xl'>Facultad de Medicina</h1>
+          <p className='lg:basis-1/3 text-2xl font-nunito text-neutral-500'>Informe ejecutivo</p>
+          {/* <div className='flex flex-col basis-80 h-2/3 justify-center z-10 right-0 flex-initial'>
             <MainButton text="Producción Académica" />
             <MainButton text="Docencia" />
             <MainButton text="Estímulos, programas, premios y reconocimientos" />
             <MainButton text="Personal Académico" />
-          </div>
+          </div> */}
+          {
+            mode == "light" ? (
+              <Button.Group outline className='rounded-full bg-transparent shadow-md shadow-blue-300 font-nunito'>
+                <Button color="light" >Producción Académica</Button>
+                <Button color="light" >Docencia</Button>
+                <Button color="light" >Premios y reconocimientos</Button>
+                <Button color="light" >Personal Académico</Button>
+              </Button.Group>
+            ) : (
+              <Button.Group outline className='rounded-full text-neutral-400 bg-transparent shadow-md shadow-blue-300 dark:shadow-neutral-700 font-nunito'>
+                <Button color="gray" pill>Producción Académica</Button>
+                <Button color="gray" >Docencia</Button>
+                <Button color="gray" >Premios y reconocimientos</Button>
+                <Button color="gray" pill >Personal Académico</Button>
+              </Button.Group>
+            )
+          }
+          
         </div>
         
-        <div className='h-48 lg:h-96 bg-white-background dark:bg-dark-background'></div>
+        <div className='h-48 lg:h-96 bg-white dark:bg-dark-background'></div>
         <div onScroll={handleScroll} id="snap-scroll" className='w-full h-screen snap-y snap-mandatory overflow-x-hidden overflow-y-scroll sticky remove-scroll'>
           {documents && <LinearChart title="Documentos" data={documents} colors={colors} mode={mode} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick} />}
           {articles && <LinearChart title="Artículos" data={articles} colors={colors} mode={mode} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
