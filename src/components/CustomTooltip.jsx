@@ -9,7 +9,7 @@ export function CustomTooltip({ payload, label, active, data, showKeys }) {
       data: PropTypes.object,
       showKeys: PropTypes.object
     }
-    const colors = ['text-[#8A0094]', "text-[#00FFC4]", "text-[#FF4B14]", "text-[#FC6DAB]", "text-[#08B2E3]", "text-[#2B9720]"]
+    const colors = ['text-[#be123c]', "text-[#9333ea]", "text-[#0891b2]", "text-[#65a30d]", "text-[#ca8a04]", "text-[#ea580c]"]
     let payloadIndex = 0;
 
     useEffect(() => {
@@ -19,7 +19,7 @@ export function CustomTooltip({ payload, label, active, data, showKeys }) {
   
     if (active) {
       return (
-        <div className="bg-white-background/30 rounded-sm flex flex-col items-center">
+        <div className="bg-neutral-400/70 rounded-xl flex flex-col items-center">
           <p className="text-white-text font-bold text-2xl">{label}</p>
           {payload.length > 0 && 
             data.keys.map((key, index) => {

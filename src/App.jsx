@@ -71,7 +71,7 @@ function App() {
     } else {
       setMode('light');
       setModeIcon(moonSVG);
-      document.getElementById("root").style["background-color"] = '#F8F4E3';
+      document.getElementById("root").style["background-color"] = '#ffffff';
       document.getElementById("root").style["color"] = '#090909';      
     }
   }

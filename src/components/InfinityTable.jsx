@@ -132,7 +132,7 @@ export function InfinityTable({title, timeLapse, time, dataKey, sex, total}){
         dark:text-neutral-500 text-lg font-nunito my-4 lg:mb-2">{`${title} con ${dataKey} del ${time}`}</h1>
           <div className="grid grid-cols-2 pl-36 justify-stretch gap-4 w-11/12 lg:w-3/4">
             <FloatingLabel ref={tituloInput} className="bg-neutral-100 dark:bg-neutral-900/20" label="Título" variant="filled"/>
-            <Button pill color="gray" className=" items-center mb-2 mx-2 lg:w-32 shadow-sm shadow-blue-800" onClick={filterData}>Buscar</Button>
+            <Button pill color="gray" className=" items-center mb-2 mx-2 lg:w-32 shadow-sm shadow-blue-800 dark:shadow-neutral-400" onClick={filterData}>Buscar</Button>
           </div>
             <div id="scrollableTarget" className="w-full overflow-x-hidden">
               <InfiniteScroll scrollableTarget="scrollableTarget" dataLength={items.length} 

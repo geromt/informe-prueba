@@ -288,10 +288,10 @@ export function LinearChart({title, data, colors, mode, onDataSelected, onActive
             <div className="flex flex-row items-center grow-0 ">
               {
                 mode == "light" ? (
-                  <Button.Gruop outline>
+                  <Button.Group outline>
                   <Button pill outline color="light" size="xs" className="transition shadow-md shadow-red-300 font-nunito text-blue-950" onClick={() => chartToSVG(lineChartContainer.current)}>Guardar como SVG</Button>
                   <Button pill outline color="light" size="xs" className="transition shadow-md shadow-red-300 font-nunito text-blue-950" onClick={() => dataToTxt(dataToChart)}>Guardar como JSON</Button>
-                  </Button.Gruop>
+                  </Button.Group>
                 ) : (
                   <Button.Group outline>
                   <Button pill color="gray" size="xs" className="transition shadow-sm shadow-red-300 font-nunito text-blue-950" onClick={() => chartToSVG(lineChartContainer.current)}>Guardar como SVG</Button>
