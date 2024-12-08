@@ -119,7 +119,7 @@ function App() {
     setModalData({title, timeLapse, time, dataKey, sex, total});
   };
 
-  const colors = ['#8A0094',"#00FFC4", "#FF4B14", "#A80874", "#08B2E3", "#2B9720"]
+  const colors = ["#be123c", '#9333ea', "#0891b2", "#65a30d", "#ca8a04", "#ea580c"]
 
   return (
     <div id="parent" className={mode}>
@@ -152,10 +152,10 @@ function App() {
         
         <div className='h-48 lg:h-96 bg-white-background dark:bg-dark-background'></div>
         <div onScroll={handleScroll} id="snap-scroll" className='w-full h-screen snap-y snap-mandatory overflow-x-hidden overflow-y-scroll sticky remove-scroll'>
-          {documents && <LinearChart title="Documentos" data={documents} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick} />}
-          {articles && <LinearChart title="Artículos" data={articles} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
-          {isbn && <LinearChart title="ISBN" data={isbn} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
-          {humanindex && <LinearChart title="Humanindex" data={humanindex} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
+          {documents && <LinearChart title="Documentos" data={documents} colors={colors} mode={mode} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick} />}
+          {articles && <LinearChart title="Artículos" data={articles} colors={colors} mode={mode} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
+          {isbn && <LinearChart title="ISBN" data={isbn} colors={colors} mode={mode} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
+          {humanindex && <LinearChart title="Humanindex" data={humanindex} colors={colors} mode={mode} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
           {projects && <BarLineChart title="Proyectos" data={projects} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
           {participacionesProjects && <BarLineChart title="Participaciones Proyectos" data={participacionesProjects} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
           {patentsSections && <PatentsSwitchChart title="Patente por secciones" data={patentsSections} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}

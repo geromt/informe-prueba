@@ -15,11 +15,12 @@ const CustomizedDot = ({cx, cy, fill, dataKey, payload, title, timeLapse, sex, o
   );
 };
 
-export function LinearChart({title, data, colors, onDataSelected, onActiveDotClicked }){
+export function LinearChart({title, data, colors, mode, onDataSelected, onActiveDotClicked }){
     LinearChart.propTypes = {
         title: PropTypes.string.isRequired,
         data: PropTypes.object.isRequired,
         colors: PropTypes.array.isRequired,
+        mode: PropTypes.string.isRequired,
         onDataSelected: PropTypes.func.isRequired,
         onActiveDotClicked: PropTypes.func.isRequired
     }
@@ -65,17 +66,18 @@ export function LinearChart({title, data, colors, onDataSelected, onActiveDotCli
     }, [data])
 
     return (
-        <div className="bg-white-background dark:bg-dark-background  flex flex-col items-center justify-center 
+        <div className="bg-white dark:bg-dark-background  flex flex-col items-center justify-center 
           w-full h-screen snap-center shrink-0">
-          <h1 className="text-white-secondary db-white-background 
-          dark:text-dark-secondary dark:bg-dark-background my-4 lg:my-8">{title}</h1>
-          <div className="flex flex-row justify-around w-full my-4 gap-2 lg:gap-0">
+          <h1 className="font-nunito font-bold text-6xl underline text-neutral-700
+          dark:text-neutral-500 dark:bg-dark-background my-2 lg:my-4">{title}</h1>
+          <div className="flex flex-row border-y-2 dark:border-neutral-700 bg-slate-100 dark:bg-neutral-900/30 py-2 shadow-sm shadow-slate-300 dark:shadow-blue-950 justify-around w-full my-4 gap-2 lg:gap-0">
             <div className="flex flex-row lg:gap-4 basis-1/2">
-              <Dropdown outline gradientDuoTone="purpleToBlue" className="bg-transparent border-0" label={desdeLabel}>
+            {mode === "dark" ? (
+              <Dropdown pill color="gray" className="font-nunito bg-neutral-900/30 border-0" label={desdeLabel}>
               {
                 range(dropdownFrom-data.from + 1, data.from).map((i) => {
                   return (
-                  <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
+                  <Dropdown.Item className="bg-slate-100 dark:bg-neutral-800 text-blue-950 dark:text-neutral-400 rounded-xl dark:rounded-md border-slate-300 shadow-md shadow-blue-300 dark:shadow-blue-800 hover:scale-105" 
                     onClick={() => {
                       setDropdownTo(i);
                       setDesdeLabel(`Desde: ${i}`);
@@ -86,11 +88,29 @@ export function LinearChart({title, data, colors, onDataSelected, onActiveDotCli
                 })
               }
               </Dropdown>
-              <Dropdown outline gradientDuoTone="purpleToBlue" className="bg-transparent border-0" label={hastaLabel}>
+            ) : (
+              <Dropdown pill outline color="light" className="font-nunito bg-transparent border-0" label={desdeLabel}>
+              {
+                range(dropdownFrom-data.from + 1, data.from).map((i) => {
+                  return (
+                  <Dropdown.Item className="bg-slate-100 text-neutral-700 rounded-xl border-slate-300 shadow-md shadow-blue-300  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
+                    onClick={() => {
+                      setDropdownTo(i);
+                      setDesdeLabel(`Desde: ${i}`);
+                      sliceData(data.data, i, dropdownFrom);
+                    }} 
+                    key={i}>{i}
+                  </Dropdown.Item>);
+                })
+              }
+              </Dropdown>
+            )}
+            {mode == "dark" ? (
+              <Dropdown pill color="gray" className="font-nunito bg-transparent border-0" label={hastaLabel}>
               {
                 range(data.to-dropdownTo + 1, dropdownTo).map((i) => {
                   return (
-                    <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
+                    <Dropdown.Item className="bg-slate-100 dark:bg-neutral-800 text-blue-950 dark:text-neutral-400 rounded-xl dark:rounded-md border-slate-300 shadow-md shadow-blue-300 dark:shadow-blue-800 hover:scale-105" 
                       onClick={() => {
                         setDropdownFrom(i);
                         setHastaLabel(`Hasta: ${i}`);
@@ -102,9 +122,30 @@ export function LinearChart({title, data, colors, onDataSelected, onActiveDotCli
                 })
               }
               </Dropdown>
+            ) : (
+              <Dropdown pill outline color="light" className="font-nunito bg-transparent border-0" label={hastaLabel}>
+              {
+                range(data.to-dropdownTo + 1, dropdownTo).map((i) => {
+                  return (
+                    <Dropdown.Item className="bg-slate-100 text-neutral-700 rounded-xl border-slate-300 shadow-md shadow-blue-300  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
+                      onClick={() => {
+                        setDropdownFrom(i);
+                        setHastaLabel(`Hasta: ${i}`);
+                        sliceData(data.data, dropdownTo, i);
+                      }} 
+                      key={i}>{i}
+                    </Dropdown.Item>
+                  )
+                })
+              }
+              </Dropdown>
+            )}
+              
             </div>
-            <Dropdown outline gradientDuoTone="purpleToBlue" className="bg-transparent border-0" label={timeLabel}>
-                <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
+            {mode == "light" ? (
+              <>
+              <Dropdown outline pill color="light" className="font-nunito bg-transparent border-0" label={timeLabel}>
+                <Dropdown.Item className="bg-slate-100 text-neutral-700 rounded-xl border-slate-300 shadow-md shadow-blue-300 hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
                   onClick={() => {
                     setTimeLabel(`Tiempo: Años`);
                     setTime("year")
@@ -112,7 +153,7 @@ export function LinearChart({title, data, colors, onDataSelected, onActiveDotCli
                   }}>
                   Años
                 </Dropdown.Item>
-                <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105"
+                <Dropdown.Item className="bg-slate-100 text-neutral-700 rounded-xl border-slate-300 shadow-md shadow-blue-300 hover:from-cyan-500 hover:to-purple-600 hover:scale-105"
                   onClick={() => {
                     setTimeLabel(`Tiempo: Meses`);
                     setTime("month")
@@ -121,8 +162,8 @@ export function LinearChart({title, data, colors, onDataSelected, onActiveDotCli
                     Meses
                 </Dropdown.Item>
             </Dropdown>    
-            <Dropdown outline gradientDuoTone="purpleToBlue" className="bg-transparent border-0" label={sexoLabel}>
-                <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
+            <Dropdown outline pill color="light" className="font-nunito bg-transparent border-0" label={sexoLabel}>
+                <Dropdown.Item className="bg-slate-100 text-neutral-700 rounded-xl border-slate-300 shadow-md shadow-blue-300 hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
                   onClick={() => {
                     setSexoLabel(`Sexo: Ambos`);
                     setSexo("Ambos")
@@ -130,7 +171,7 @@ export function LinearChart({title, data, colors, onDataSelected, onActiveDotCli
                   }}>
                   Ambos
                 </Dropdown.Item>
-                <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105"
+                <Dropdown.Item className="bg-slate-100 text-neutral-700 rounded-xl border-slate-300 shadow-md shadow-blue-300 hover:from-cyan-500 hover:to-purple-600 hover:scale-105"
                   onClick={() => {
                     setSexoLabel(`Sexo: Masculino`);
                     setSexo("M")
@@ -138,7 +179,7 @@ export function LinearChart({title, data, colors, onDataSelected, onActiveDotCli
                     }}>
                     Masculino
                 </Dropdown.Item>
-                <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
+                <Dropdown.Item className="bg-slate-100 text-neutral-700 rounded-xl border-slate-300 shadow-md shadow-blue-300 hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
                   onClick={() => {
                     setSexoLabel(`Sexo: Femenino`);
                     setSexo("F")
@@ -147,10 +188,59 @@ export function LinearChart({title, data, colors, onDataSelected, onActiveDotCli
                   Femenino
                 </Dropdown.Item>
             </Dropdown>
+            </>
+            ) : (
+              <>
+              <Dropdown pill color="gray" className="font-nunito bg-transparent border-0" label={timeLabel}>
+                <Dropdown.Item className="bg-slate-100 dark:bg-neutral-800 text-blue-950 dark:text-neutral-400 rounded-xl dark:rounded-md border-slate-300 shadow-md shadow-blue-300 dark:shadow-blue-800 hover:scale-105" 
+                  onClick={() => {
+                    setTimeLabel(`Tiempo: Años`);
+                    setTime("year")
+                    onDataSelected(sexo, "year", title)
+                  }}>
+                  Años
+                </Dropdown.Item>
+                <Dropdown.Item className="bg-slate-100 dark:bg-neutral-800 text-blue-950 dark:text-neutral-400 rounded-xl dark:rounded-md border-slate-300 shadow-md shadow-blue-300 dark:shadow-blue-800 hover:scale-105"
+                  onClick={() => {
+                    setTimeLabel(`Tiempo: Meses`);
+                    setTime("month")
+                    onDataSelected(sexo, "month", title)
+                    }}>
+                    Meses
+                </Dropdown.Item>
+              </Dropdown>    
+              <Dropdown pill color="gray" className="font-nunito bg-transparent border-0" label={sexoLabel}>
+                  <Dropdown.Item className="bg-slate-100 dark:bg-neutral-800 text-blue-950 dark:text-neutral-400 rounded-xl dark:rounded-md border-slate-300 shadow-md shadow-blue-300 dark:shadow-blue-800 hover:scale-105" 
+                    onClick={() => {
+                      setSexoLabel(`Sexo: Ambos`);
+                      setSexo("Ambos")
+                      onDataSelected("Ambos", time, title)
+                    }}>
+                    Ambos
+                  </Dropdown.Item>
+                  <Dropdown.Item className="bg-slate-100 dark:bg-neutral-800 text-blue-950 dark:text-neutral-400 rounded-xl dark:rounded-md border-slate-300 shadow-md shadow-blue-300 dark:shadow-blue-800 hover:scale-105"
+                    onClick={() => {
+                      setSexoLabel(`Sexo: Masculino`);
+                      setSexo("M")
+                      onDataSelected("M", time, title)
+                      }}>
+                      Masculino
+                  </Dropdown.Item>
+                  <Dropdown.Item className="bg-slate-100 dark:bg-neutral-800 text-blue-950 dark:text-neutral-400 rounded-xl dark:rounded-md border-slate-300 shadow-md shadow-blue-300 dark:shadow-blue-800 hover:scale-105" 
+                    onClick={() => {
+                      setSexoLabel(`Sexo: Femenino`);
+                      setSexo("F")
+                      onDataSelected("F", time, title);
+                    }}>
+                    Femenino
+                  </Dropdown.Item>
+              </Dropdown>
+              </>
+            )}
           </div>
-          <div ref={lineChartContainer} className="w-full h-2/3">
+          <div ref={lineChartContainer} className="w-10/12 h-2/3">
           <ResponsiveContainer width="100%">
-            <AreaChart height={400} data={dataToChart}  margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+            <AreaChart height={400} data={dataToChart} margin={{ top: 5, right: 20, bottom: 5, left: 20 }}>
               <defs>
               {
                 data.keys.map((key, index) => {
@@ -178,19 +268,35 @@ export function LinearChart({title, data, colors, onDataSelected, onActiveDotCli
             </AreaChart>
           </ResponsiveContainer>
           </div>
-          <div className="flex flex-row justify-center gap-1 lg:gap-12 items-center w-full">
-            <div className="grid grid-cols-2 gap-1 lg:flex lg:flex-row justify-center lg:gap-8 grow">
+          <div className="flex flex-row justify-center gap-1 lg:gap-12 items-center w-full border-y-2 bg-slate-100 dark:bg-neutral-900/30 dark:border-neutral-700 py-2 shadow-sm shadow-slate-300">
+            <div className="grid grid-cols-2 lg:flex lg:flex-row justify-center grow">
                 {
                     data.keys.map(key => {
-                        return <Button gradientDuoTone="purpleToBlue" size="sm" key={key} onClick={() => handleShowKeys(key)}>
+                      if (mode == "light")
+                        return <Button pill outline color="light" size="xs" className="transition shadow-md shadow-blue-300 font-nunito text-blue-950 hover:scale-105" key={key} onClick={() => handleShowKeys(key)}>
                             {showKeys[key] ? `Ocultar ${key.toUpperCase()}`: `Mostrar ${key.toUpperCase()}`}
                         </Button>
+                      else
+                        return <Button pill color="gray" size="xs" className="transition shadow-sm shadow-blue-900 font-nunito text-blue-950 hover:scale-105" key={key} onClick={() => handleShowKeys(key)}>
+                        {showKeys[key] ? `Ocultar ${key.toUpperCase()}`: `Mostrar ${key.toUpperCase()}`}
+                    </Button>
                     })
                 }
             </div>
-            <div className="flex flex-row gap-1 items-center grow-0">
-                <Button size="sm" outline gradientDuoTone="pinkToOrange" onClick={() => chartToSVG(lineChartContainer.current)}>Guardar como SVG</Button>
-                <Button size="sm" outline gradientDuoTone="pinkToOrange" onClick={() => dataToTxt(dataToChart)}>Guardar como JSON</Button>
+            <div className="flex flex-row items-center grow-0 ">
+              {
+                mode == "light" ? (
+                  <>
+                  <Button pill outline color="light" size="xs" className="transition shadow-md shadow-red-300 font-nunito text-blue-950" onClick={() => chartToSVG(lineChartContainer.current)}>Guardar como SVG</Button>
+                  <Button pill outline color="light" size="xs" className="transition shadow-md shadow-red-300 font-nunito text-blue-950" onClick={() => dataToTxt(dataToChart)}>Guardar como JSON</Button>
+                  </>
+                ) : (
+                  <>
+                  <Button pill color="gray" size="xs" className="transition shadow-sm shadow-red-300 font-nunito text-blue-950" onClick={() => chartToSVG(lineChartContainer.current)}>Guardar como SVG</Button>
+                  <Button pill color="gray" size="xs" className="transition shadow-sm shadow-red-300 font-nunito text-blue-950" onClick={() => dataToTxt(dataToChart)}>Guardar como JSON</Button>
+                  </>
+                )
+              }
             </div>
           </div>
         </div>

@@ -23,6 +23,9 @@ export default {
         'white-text': '#090909',
         'white-primary': '#00BBF0',
         'white-secondary': '#006494',
+      },
+      fontFamily: {
+        nunito: ["Nunito Sans", "sans-serif"],
       }
     },
   },
