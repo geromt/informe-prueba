@@ -19,7 +19,7 @@ export function CustomTooltip({ payload, label, active, data, showKeys }) {
   
     if (active) {
       return (
-        <div className="bg-neutral-400/70 rounded-xl flex flex-col items-center">
+        <div className="bg-neutral-300/60 dark:bg-neutral-400/70 rounded-xl flex flex-col items-center">
           <p className="text-white-text font-bold text-2xl">{label}</p>
           {payload.length > 0 && 
             data.keys.map((key, index) => {

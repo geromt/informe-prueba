@@ -177,8 +177,8 @@ function App() {
           {articles && <LinearChart title="Artículos" data={articles} colors={colors} mode={mode} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
           {isbn && <LinearChart title="ISBN" data={isbn} colors={colors} mode={mode} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
           {humanindex && <LinearChart title="Humanindex" data={humanindex} colors={colors} mode={mode} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
-          {projects && <BarLineChart title="Proyectos" data={projects} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
-          {participacionesProjects && <BarLineChart title="Participaciones Proyectos" data={participacionesProjects} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
+          {projects && <BarLineChart title="Proyectos" data={projects} colors={colors} mode={mode} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
+          {participacionesProjects && <BarLineChart title="Participaciones Proyectos" data={participacionesProjects} colors={colors} mode={mode} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
           {patentsSections && <PatentsSwitchChart title="Patente por secciones" data={patentsSections} colors={colors} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
           {patents && <PatentsTable title="Patentes" data={patents} />}
         </div>
