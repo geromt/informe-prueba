@@ -1,22 +1,24 @@
-/* eslint-disable react/prop-types */
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Bar } from "recharts"
 import { useEffect, useState, useRef } from "react";
 import { Button, Dropdown } from "flowbite-react"
 import { PropTypes } from "prop-types"
 import { chartToSVG, dataToTxt } from "../services/chartsServices";
+import { CustomTooltipPatents } from "./CustomTooltip";
 
 
-export function PatentsSwitchChart({title, data, colors, onDataSelected, onActiveDotClicked}){
+export function PatentsSwitchChart({title, data, colors, mode, onDataSelected, onActiveDotClicked}){
     PatentsSwitchChart.propTypes = {
         title: PropTypes.string.isRequired,
         data: PropTypes.array.isRequired,
         colors: PropTypes.array.isRequired,
+        mode: PropTypes.string.isRequired,
         onDataSelected: PropTypes.func.isRequired,
         onActiveDotClicked: PropTypes.func.isRequired
     }
     const [dataToChart, setDataToChart] = useState(data)
     const lineChartContainer = useRef(null)
     const [chartType, setChartType] = useState("Radar")
+    const [chartTypeLabel, setChartTypeLabel] = useState("Tipo: Radar")
 
     useEffect(() => {
         console.log(colors)
@@ -26,9 +28,9 @@ export function PatentsSwitchChart({title, data, colors, onDataSelected, onActiv
     }, [data])
 
     const renderCustomAxisTick = ({ x, y, payload }) => {
-      if (payload.value === 'PHYSICS') {
+      if (payload.value === 'Física') {
         return (
-        <svg fill="#000000" x={x-16} y={y-4} height={32} width={32} version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <svg fill={mode=="light"?"#000000":"#aaaaaa"} x={chartType=="Radar" ? x-25:x-16} y={chartType=="Radar" ? y-25:y-4} height={32} width={32} version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
           <g>
             <g>
               <path d="M408.772,256c11.582-10.037,22.114-20.062,31.393-29.927c48.223-51.27,47.031-81.631,37.538-98.073
@@ -79,29 +81,40 @@ export function PatentsSwitchChart({title, data, colors, onDataSelected, onActiv
           </g>
         </svg>
         )
-      } else if (payload.value === "CHEMISTRY; METALLURGY") {
+      } else if (payload.value === "Química") {
         return (
-          <svg x={x-16} y={y-4} width={32} height={32} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 17C10.5523 17 11 16.5523 11 16C11 15.4477 10.5523 15 10 15C9.44772 15 9 15.4477 9 16C9 16.5523 9.44772 17 10 17Z" fill="#0F0F0F"/>
-            <path d="M15 18C15 18.5523 14.5523 19 14 19C13.4477 19 13 18.5523 13 18C13 17.4477 13.4477 17 14 17C14.5523 17 15 17.4477 15 18Z" fill="#0F0F0F"/>
-            <path fillRule="evenodd" clipRule="evenodd" d="M15 3V7.58152C17.9318 8.76829 20 11.6426 20 15C20 19.4183 16.4183 23 12 23C7.58172 23 4 19.4183 4 15C4 11.6426 6.06817 8.76829 9 7.58152V3H8C7.44772 3 7 2.55228 7 2C7 1.44772 7.44772 1 8 1H16C16.5523 1 17 1.44772 17 2C17 2.55228 16.5523 3 16 3H15ZM9.75043 9.43539L10.3752 9.18249C10.7529 9.02962 11 8.66295 11 8.25555V3H13V8.25555C13 8.66295 13.2471 9.02962 13.6248 9.18249L14.2496 9.43539C15.1075 9.78268 15.8661 10.3221 16.4726 11L7.52739 11C8.13388 10.3221 8.89249 9.78268 9.75043 9.43539ZM6.3414 13C6.12025 13.6258 6 14.2991 6 15C6 18.3137 8.68629 21 12 21C15.3137 21 18 18.3137 18 15C18 14.2991 17.8798 13.6258 17.6586 13L6.3414 13Z" fill="#0F0F0F"/>
+          <svg x={x-16} y={chartType=="Radar" ? y-25 : y-4} width={32} height={32} viewBox="0 0 24 24" fill={mode=="light"?"#000000":"#aaaaaa"} xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 17C10.5523 17 11 16.5523 11 16C11 15.4477 10.5523 15 10 15C9.44772 15 9 15.4477 9 16C9 16.5523 9.44772 17 10 17Z" fill={mode=="light"?"#000000":"#aaaaaa"}/>
+            <path d="M15 18C15 18.5523 14.5523 19 14 19C13.4477 19 13 18.5523 13 18C13 17.4477 13.4477 17 14 17C14.5523 17 15 17.4477 15 18Z" fill={mode=="light"?"#000000":"#aaaaaa"}/>
+            <path fillRule="evenodd" clipRule="evenodd" d="M15 3V7.58152C17.9318 8.76829 20 11.6426 20 15C20 19.4183 16.4183 23 12 23C7.58172 23 4 19.4183 4 15C4 11.6426 6.06817 8.76829 9 7.58152V3H8C7.44772 3 7 2.55228 7 2C7 1.44772 7.44772 1 8 1H16C16.5523 1 17 1.44772 17 2C17 2.55228 16.5523 3 16 3H15ZM9.75043 9.43539L10.3752 9.18249C10.7529 9.02962 11 8.66295 11 8.25555V3H13V8.25555C13 8.66295 13.2471 9.02962 13.6248 9.18249L14.2496 9.43539C15.1075 9.78268 15.8661 10.3221 16.4726 11L7.52739 11C8.13388 10.3221 8.89249 9.78268 9.75043 9.43539ZM6.3414 13C6.12025 13.6258 6 14.2991 6 15C6 18.3137 8.68629 21 12 21C15.3137 21 18 18.3137 18 15C18 14.2991 17.8798 13.6258 17.6586 13L6.3414 13Z" fill={mode=="light"?"#000000":"#aaaaaa"}/>
           </svg>
         )
-      } else if (payload.value === "ELECTRICITY") {
+      } else if (payload.value === "Electricidad") {
         return (
-          <svg x={x-16} y={y-4} width={32} height={32} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fillRule="evenodd" clipRule="evenodd" d="M15 8H11.9451L13.9191 3.39392C14.2019 2.73405 13.7179 2 13 2H8C7.59997 2 7.23843 2.2384 7.08086 2.60608L4.08086 9.60608C3.79805 10.2659 4.28208 11 5 11H6.73423L4.07207 17.6273C3.67234 18.6223 4.90667 19.4633 5.68646 18.7272L10.7099 13.9849L15.6501 9.75985C16.3559 9.156 15.9289 8 15 8ZM9.50943 8.60608C9.22663 9.26595 9.71066 10 10.4286 10H12.2929L9.37334 12.4979L7.62514 14.1477L9.14152 10.3727C9.40546 9.71569 8.92168 9 8.21359 9H6.51654L8.6594 4H11.4835L9.50943 8.60608Z" fill="#000000"/>
+          <svg x={chartType=="Radar"? x:x-16} y={chartType=="Radar"?y-25:y-4} width={32} height={32} viewBox="0 0 20 20" fill={mode=="light"?"#000000":"#aaaaaa"} xmlns="http://www.w3.org/2000/svg">
+            <path fillRule="evenodd" clipRule="evenodd" d="M15 8H11.9451L13.9191 3.39392C14.2019 2.73405 13.7179 2 13 2H8C7.59997 2 7.23843 2.2384 7.08086 2.60608L4.08086 9.60608C3.79805 10.2659 4.28208 11 5 11H6.73423L4.07207 17.6273C3.67234 18.6223 4.90667 19.4633 5.68646 18.7272L10.7099 13.9849L15.6501 9.75985C16.3559 9.156 15.9289 8 15 8ZM9.50943 8.60608C9.22663 9.26595 9.71066 10 10.4286 10H12.2929L9.37334 12.4979L7.62514 14.1477L9.14152 10.3727C9.40546 9.71569 8.92168 9 8.21359 9H6.51654L8.6594 4H11.4835L9.50943 8.60608Z" fill={mode=="light"?"#000000":"#aaaaaa"}/>
           </svg>
         )
-      } else if (payload.value === "FIXED CONSTRUCTIONS") {
+      } else if (payload.value === "Construcciones") {
         return (
-          <svg x={x-16} y={y-4} width={32} height={32} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path fillRule="evenodd" clipRule="evenodd" d="M3.13861 8.5856C3.10395 8.79352 3.07799 8.98444 3.05852 9.15412C2.89911 9.20305 2.72733 9.2683 2.55279 9.35557C2.18416 9.53989 1.78511 9.83206 1.48045 10.2891C1.17162 10.7523 1 11.325 1 12C1 12.675 1.17162 13.2477 1.48045 13.7109C1.78511 14.1679 2.18416 14.4601 2.55279 14.6444C2.72733 14.7317 2.89911 14.7969 3.05852 14.8459C3.07798 15.0156 3.10395 15.2065 3.13861 15.4144C3.27452 16.2299 3.54822 17.3325 4.10557 18.4472C4.66489 19.5658 5.51956 20.7149 6.8203 21.5821C8.1273 22.4534 9.82502 23 12 23C14.175 23 15.8727 22.4534 17.1797 21.5821C18.4804 20.7149 19.3351 19.5658 19.8944 18.4472C20.4518 17.3325 20.7255 16.2299 20.8614 15.4144C20.896 15.2065 20.922 15.0156 20.9415 14.8459C21.1009 14.7969 21.2727 14.7317 21.4472 14.6444C21.8158 14.4601 22.2149 14.1679 22.5196 13.7109C22.8284 13.2477 23 12.675 23 12C23 11.325 22.8284 10.7523 22.5196 10.2891C22.2149 9.83206 21.8158 9.53989 21.4472 9.35557C21.2727 9.2683 21.1009 9.20305 20.9415 9.15412C20.922 8.98444 20.896 8.79352 20.8614 8.5856C20.7255 7.77011 20.4518 6.6675 19.8944 5.55278C19.3351 4.43416 18.4804 3.28511 17.1797 2.41795C15.8727 1.54662 14.175 1 12 1C9.82502 1 8.1273 1.54662 6.8203 2.41795C5.51957 3.28511 4.66489 4.43416 4.10558 5.55279C3.54822 6.6675 3.27452 7.77011 3.13861 8.5856ZM18.9025 15H5.09753C5.20639 15.692 5.43305 16.63 5.89443 17.5528C6.33511 18.4342 6.98044 19.2851 7.9297 19.9179C8.8727 20.5466 10.175 21 12 21C13.825 21 15.1273 20.5466 16.0703 19.9179C17.0196 19.2851 17.6649 18.4342 18.1056 17.5528C18.5669 16.63 18.7936 15.692 18.9025 15ZM18.9025 9H18C17.4477 9 17 9.44771 17 10C17 10.5523 17.4477 11 18 11H20C20.3084 11.012 20.6759 11.1291 20.8554 11.3984C20.9216 11.4977 21 11.675 21 12C21 12.325 20.9216 12.5023 20.8554 12.6016C20.6759 12.8709 20.3084 12.988 20 13H4C3.69155 12.988 3.32414 12.8709 3.14455 12.6016C3.07838 12.5023 3 12.325 3 12C3 11.675 3.07838 11.4977 3.14455 11.3984C3.32414 11.1291 3.69155 11.012 4 11H6C6.55228 11 7 10.5523 7 10C7 9.44771 6.55228 9 6 9H5.09753C5.20639 8.30804 5.43306 7.36996 5.89443 6.44721C6.33512 5.56584 6.98044 4.71489 7.92971 4.08205C8.24443 3.87224 8.59917 3.68195 9 3.52152V6C9 6.55228 9.44771 7 10 7C10.5523 7 11 6.55228 11 6V3.04872C11.3146 3.01691 11.6476 3 12 3C12.3524 3 12.6854 3.01691 13 3.04872V6C13 6.55228 13.4477 7 14 7C14.5523 7 15 6.55228 15 6V3.52152C15.4008 3.68195 15.7556 3.87224 16.0703 4.08205C17.0196 4.71489 17.6649 5.56584 18.1056 6.44721C18.5669 7.36996 18.7936 8.30804 18.9025 9Z" fill="#0F0F0F"/>
+          <svg x={chartType=="Radar"?x:x-16} y={chartType=="Radar"?y-15:y-4} width={32} height={32} viewBox="0 0 24 24" fill={mode=="light"?"#000000":"#aaaaaa"} xmlns="http://www.w3.org/2000/svg">
+          <path fillRule="evenodd" clipRule="evenodd" d="M3.13861 8.5856C3.10395 8.79352 3.07799 8.98444 3.05852 9.15412C2.89911 9.20305 2.72733 9.2683 2.55279 9.35557C2.18416 9.53989 1.78511 9.83206 1.48045 10.2891C1.17162 
+          10.7523 1 11.325 1 12C1 12.675 1.17162 13.2477 1.48045 13.7109C1.78511 14.1679 2.18416 14.4601 2.55279 14.6444C2.72733 14.7317 2.89911 14.7969 3.05852 14.8459C3.07798 15.0156 3.10395 15.2065 3.13861 15.4144C3.27452 
+          16.2299 3.54822 17.3325 4.10557 18.4472C4.66489 19.5658 5.51956 20.7149 6.8203 21.5821C8.1273 22.4534 9.82502 23 12 23C14.175 23 15.8727 22.4534 17.1797 21.5821C18.4804 20.7149 19.3351 19.5658 19.8944 18.4472C20.4518 
+          17.3325 20.7255 16.2299 20.8614 15.4144C20.896 15.2065 20.922 15.0156 20.9415 14.8459C21.1009 14.7969 21.2727 14.7317 21.4472 14.6444C21.8158 14.4601 22.2149 14.1679 22.5196 13.7109C22.8284 13.2477 23 12.675 23 12C23 
+          11.325 22.8284 10.7523 22.5196 10.2891C22.2149 9.83206 21.8158 9.53989 21.4472 9.35557C21.2727 9.2683 21.1009 9.20305 20.9415 9.15412C20.922 8.98444 20.896 8.79352 20.8614 8.5856C20.7255 7.77011 20.4518 6.6675 19.8944 
+          5.55278C19.3351 4.43416 18.4804 3.28511 17.1797 2.41795C15.8727 1.54662 14.175 1 12 1C9.82502 1 8.1273 1.54662 6.8203 2.41795C5.51957 3.28511 4.66489 4.43416 4.10558 5.55279C3.54822 6.6675 3.27452 7.77011 3.13861 
+          8.5856ZM18.9025 15H5.09753C5.20639 15.692 5.43305 16.63 5.89443 17.5528C6.33511 18.4342 6.98044 19.2851 7.9297 19.9179C8.8727 20.5466 10.175 21 12 21C13.825 21 15.1273 20.5466 16.0703 19.9179C17.0196 19.2851 17.6649 
+          18.4342 18.1056 17.5528C18.5669 16.63 18.7936 15.692 18.9025 15ZM18.9025 9H18C17.4477 9 17 9.44771 17 10C17 10.5523 17.4477 11 18 11H20C20.3084 11.012 20.6759 11.1291 20.8554 11.3984C20.9216 11.4977 21 11.675 21 12C21 
+          12.325 20.9216 12.5023 20.8554 12.6016C20.6759 12.8709 20.3084 12.988 20 13H4C3.69155 12.988 3.32414 12.8709 3.14455 12.6016C3.07838 12.5023 3 12.325 3 12C3 11.675 3.07838 11.4977 3.14455 11.3984C3.32414 11.1291 3.69155 
+          11.012 4 11H6C6.55228 11 7 10.5523 7 10C7 9.44771 6.55228 9 6 9H5.09753C5.20639 8.30804 5.43306 7.36996 5.89443 6.44721C6.33512 5.56584 6.98044 4.71489 7.92971 4.08205C8.24443 3.87224 8.59917 3.68195 9 3.52152V6C9 
+          6.55228 9.44771 7 10 7C10.5523 7 11 6.55228 11 6V3.04872C11.3146 3.01691 11.6476 3 12 3C12.3524 3 12.6854 3.01691 13 3.04872V6C13 6.55228 13.4477 7 14 7C14.5523 7 15 6.55228 15 6V3.52152C15.4008 3.68195 15.7556 3.87224 
+          16.0703 4.08205C17.0196 4.71489 17.6649 5.56584 18.1056 6.44721C18.5669 7.36996 18.7936 8.30804 18.9025 9Z" fill={mode=="light"?"#000000":"#aaaaaa"}/>
           </svg>
         )
-      } else if (payload.value === "HUMAN NECESSITIES") {
+      } else if (payload.value === "Necesidades Humanas") {
         return (
-          <svg fill="#000000" x={x-16} y={y-4} width={32} height={32} xmlns="http://www.w3.org/2000/svg"
+          <svg fill={mode=="light"?"#000000":"#aaaaaa"} x={x-16} y={y-4} width={32} height={32} xmlns="http://www.w3.org/2000/svg"
               viewBox="-69 0 117 256">
           <path d="M-10.9,4.9c11.3,0,20.5,9.2,20.5,20.5S0.4,45.9-10.9,45.9s-20.5-9.2-20.5-20.5S-22.2,4.9-10.9,4.9z M14.9,51.2h-51.2
             c-14.2,0-25.6,11.4-25.6,25.6v62.6c0,4.9,3.9,9,9,9s9-3.9,9-9V81.9c0-1.4,1.2-2.6,2.6-2.6s2.6,1.2,2.6,2.6v155.2
@@ -110,9 +123,9 @@ export function PatentsSwitchChart({title, data, colors, onDataSelected, onActiv
             C40.5,62.6,28.8,51.2,14.9,51.2z"/>
           </svg>
         )
-      } else if (payload.value === "MECHANICAL ENGINEERING; LIGHTING; HEATING; WEAPONS; BLASTING") {
+      } else if (payload.value === "Ingeniería") {
         return (
-          <svg fill="#000000" x={x-16} y={y-4} width={32} height={32} version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" 
+          <svg fill={mode=="light"?"#000000":"#aaaaaa"} x={x-16} y={y-4} width={32} height={32} version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" 
             viewBox="0 0 503.607 503.607">
           <g transform="translate(1 1)">
             <g>
@@ -148,54 +161,81 @@ export function PatentsSwitchChart({title, data, colors, onDataSelected, onActiv
           </g>
           </svg>
         )
-      } else if (payload.value === "PERFORMING OPERATIONS; TRANSPORTING") {
+      } else if (payload.value === "Transporte") {
         return (
-          <svg x={x-16} y={y-4} width={32} height={32} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-labelledby="transportIconTitle" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="#000000"> <title id="transportIconTitle">Transport</title> <path d="M4 17H2V7H15V17H8"/> <path d="M20 17H22V12.5556L20 9H15V17H16"/> <circle cx="6" cy="17" r="2"/> <circle cx="18" cy="17" r="2"/> </svg>        
+          <svg x={chartType=="Radar"?x-25:x-16} y={chartType=="Radar"?y-15:y-4} width={32} height={32} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-labelledby="transportIconTitle" stroke={mode=="light"?"#000000":"#aaaaaa"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="#000000"> <title id="transportIconTitle">Transport</title> <path d="M4 17H2V7H15V17H8"/> <path d="M20 17H22V12.5556L20 9H15V17H16"/> <circle cx="6" cy="17" r="2"/> <circle cx="18" cy="17" r="2"/> </svg>        
         )
       }
   }
 
     return (
-        <div className="bg-white-background dark:bg-dark-background  flex flex-col items-center justify-center 
+        <div className="bg-white dark:bg-dark-background  flex flex-col items-center justify-center 
         w-full h-screen snap-center shrink-0">
-            <h1 className="text-white-secondary db-white-background 
-          dark:text-dark-secondary dark:bg-dark-background my-4 lg:my-8">{title}</h1>
-            <div className="flex flex-row justify-around w-full my-4 gap-2 lg:gap-0">
-                <Dropdown outline gradientDuoTone="purpleToBlue" className="bg-transparent border-0" label="Tipo">
-                    <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
-                    onClick={() => {setChartType("Radar")}}>
+            <h1 className="font-nunito font-bold text-6xl underline text-neutral-700
+          dark:text-neutral-500 dark:bg-dark-background my-2 lg:my-4">{title}</h1>
+            <div className="flex flex-row border-y-2 dark:border-neutral-700 bg-slate-100 dark:bg-neutral-900/30 py-2 shadow-sm shadow-slate-300 dark:shadow-neutral-400 justify-around w-full my-4 gap-2 lg:gap-0">
+              {
+                mode=="dark" ? (
+                  <Dropdown pill color="gray" className="font-nunito bg-neutral-900/30 border-0" label={chartTypeLabel}>
+                    <Dropdown.Item className="bg-slate-100 dark:bg-neutral-800 text-blue-950 dark:text-neutral-400 rounded-xl dark:rounded-md border-slate-300 shadow-md shadow-blue-300 dark:shadow-neutral-400 hover:scale-105" 
+                    onClick={() => {setChartType("Radar"); setChartTypeLabel("Tipo: Radar")}}>
                         Radar
                     </Dropdown.Item>
-                    <Dropdown.Item className="bg-gradient-to-br from-purple-600 to-cyan-500 text-white  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
-                    onClick={() => {setChartType("Bar")}}>
+                    <Dropdown.Item className="bg-slate-100 dark:bg-neutral-800 text-blue-950 dark:text-neutral-400 rounded-xl dark:rounded-md border-slate-300 shadow-md shadow-blue-300 dark:shadow-neutral-400 hover:scale-105" 
+                    onClick={() => {setChartType("Bar"); setChartTypeLabel("Tipo: Barras")}}>
                         Barras
                     </Dropdown.Item>
                 </Dropdown>
+                ) : (
+                  <Dropdown pill outline color="light" className="font-nunito bg-transparent border-0" label={chartTypeLabel}>
+                    <Dropdown.Item className="bg-slate-100 text-neutral-700 rounded-xl border-slate-300 shadow-md shadow-blue-300  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
+                    onClick={() => {setChartType("Radar"); setChartTypeLabel("Tipo: Radar")}}>
+                        Radar
+                    </Dropdown.Item>
+                    <Dropdown.Item className="bg-slate-100 text-neutral-700 rounded-xl border-slate-300 shadow-md shadow-blue-300  hover:from-cyan-500 hover:to-purple-600 hover:scale-105" 
+                    onClick={() => {setChartType("Bar"); setChartTypeLabel("Tipo: Barras")}}>
+                        Barras
+                    </Dropdown.Item>
+                </Dropdown>
+                )
+              }
             </div>
-            <div ref={lineChartContainer} className="w-full h-2/3">
+            <div ref={lineChartContainer} className="w-10/12 h-2/3">
             <ResponsiveContainer width="100%">
             {chartType == "Radar" && 
-                <RadarChart outerRadius={100} width={1000} data={data}>
+                <RadarChart outerRadius={225} width={1000} data={data}>
                     <PolarGrid />
                     <PolarAngleAxis dataKey="section" tick={renderCustomAxisTick} />
+                    <Tooltip content={<CustomTooltipPatents />} />
                     <Radar name="Secciones" dataKey="val" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
                 </RadarChart>
             }
             {chartType == "Bar" &&
-                <BarChart width={730} height={250} data={data}>
-                <CartesianGrid strokeDasharray="3 3" />
+                <BarChart height={400} data={data}>
+                <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
                 <XAxis dataKey="section" tick={renderCustomAxisTick}/>
                 <YAxis />
-                <Tooltip />
+                <Tooltip content={<CustomTooltipPatents/>}/>
                 <Bar dataKey="val" fill="#8884d8" />
               </BarChart>
             }
             </ResponsiveContainer>
             </div>
-            <div className="flex flex-row justify-center gap-1 lg:gap-12 items-center w-full">
+            <div className="flex flex-row justify-center gap-1 lg:gap-12 items-center w-full border-y-2 bg-slate-100 dark:bg-neutral-900/30 dark:border-neutral-700 py-2 shadow-sm shadow-slate-300">
               <div className="flex flex-col gap-1 items-center grow-0">
-                <Button outline gradientDuoTone="pinkToOrange" onClick={() => chartToSVG(lineChartContainer.current)}>Guardar como SVG</Button>
-                <Button outline gradientDuoTone="pinkToOrange" onClick={() => dataToTxt(dataToChart)}>Guardar como JSON</Button>
+              {
+                mode == "light" ? (
+                  <Button.Group outline>
+                  <Button pill outline color="light" size="xs" className="transition shadow-md shadow-red-300 font-nunito text-blue-950" onClick={() => chartToSVG(lineChartContainer.current)}>Guardar como SVG</Button>
+                  <Button pill outline color="light" size="xs" className="transition shadow-md shadow-red-300 font-nunito text-blue-950" onClick={() => dataToTxt(dataToChart)}>Guardar como JSON</Button>
+                  </Button.Group>
+                ) : (
+                  <Button.Group outline>
+                  <Button pill color="gray" size="xs" className="transition shadow-sm shadow-red-300 font-nunito text-blue-950" onClick={() => chartToSVG(lineChartContainer.current)}>Guardar como SVG</Button>
+                  <Button pill color="gray" size="xs" className="transition shadow-sm shadow-red-300 font-nunito text-blue-950" onClick={() => dataToTxt(dataToChart)}>Guardar como JSON</Button>
+                  </Button.Group>
+                )
+              }
               </div>
             </div>
         </div>
