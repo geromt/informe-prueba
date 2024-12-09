@@ -30,14 +30,14 @@ export function PatentsTable({title, data}){
     }, [])
 
     return (
-        <div className="bg-white-background dark:bg-dark-background  flex flex-col items-center justify-center 
+        <div className="bg-white dark:bg-dark-background  flex flex-col items-center justify-center 
         w-full h-screen snap-center shrink-0">
-          <h1 className="text-white-secondary db-white-background 
-        dark:text-dark-secondary dark:bg-dark-background my-4 lg:my-8">{title}</h1>
+          <h1 className="font-nunito font-bold text-6xl underline text-neutral-700 dark:text-neutral-500 
+         dark:bg-dark-background my-2 lg:my-4">{title}</h1>
           <div className="grid grid-cols-3 gap-4 w-11/12 lg:w-3/4">
             <FloatingLabel ref={tituloInput} label="Título" variant="filled"/>
             <FloatingLabel ref={inventoresInput} label="Inventores" variant="filled"/>
-            <Button className="items-center mb-2 mx-2 lg:mx-24" onClick={() => filterData()}>Buscar</Button>
+            <Button pill color="gray" className="items-center mb-2 mx-2 lg:mx-24 shadow-md dark:shadow-sm shadow-blue-800 dark:shadow-neutral-400" onClick={() => filterData()}>Buscar</Button>
           </div>
             <div className="w-full overflow-x-scroll overflow-y-scroll">
             <Table striped hoverable>
