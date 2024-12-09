@@ -69,6 +69,15 @@ export function InfinityTable({title, timeLapse, time, dataKey, sex, total}){
             <Table.HeadCell>Fecha Situación</Table.HeadCell>
           </Table.Head>
         )
+      } else if (title == "Patentes por secciones") {
+        return (
+          <Table.Head>
+            <Table.HeadCell>#</Table.HeadCell>
+            <Table.HeadCell>Titulo</Table.HeadCell>
+            <Table.HeadCell>Fecha Concesión</Table.HeadCell>
+            <Table.HeadCell>Sección</Table.HeadCell>
+          </Table.Head>
+        )
       } else {
         return (
           <TableHead>
@@ -106,6 +115,18 @@ export function InfinityTable({title, timeLapse, time, dataKey, sex, total}){
               <Table.Cell className="text-white-text dark:text-dark-secondary">{situacion}</Table.Cell>
               <Table.Cell className="text-white-text dark:text-dark-secondary">{area}</Table.Cell>
               <Table.Cell className="text-white-text dark:text-dark-secondary">{fecha.toLocaleDateString()}</Table.Cell>
+            </Table.Row>
+          )
+        })
+      } else if (title == "Patentes por secciones"){
+        return items.map(({titulo, fechaConcesion, seccion}, index) => {
+          const fecha = new Date(fechaConcesion);
+          return(
+            <Table.Row className="border-y-blue-300 border-y-2 dark:border-0" key={index}>
+              <Table.Cell className="text-blue-800 dark:text-blue-300">{index + 1}</Table.Cell>
+              <Table.Cell className="text-white-text dark:text-dark-secondary">{titulo}</Table.Cell>
+              <Table.Cell className="text-white-text dark:text-dark-secondary">{fecha.toLocaleDateString()}</Table.Cell>
+              <Table.Cell className="text-white-text dark:text-dark-secondary">{seccion}</Table.Cell>
             </Table.Row>
           )
         })

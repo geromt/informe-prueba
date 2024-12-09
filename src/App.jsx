@@ -179,7 +179,7 @@ function App() {
           {humanindex && <LinearChart title="Humanindex" data={humanindex} colors={colors} mode={mode} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
           {projects && <BarLineChart title="Proyectos" data={projects} colors={colors} mode={mode} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
           {participacionesProjects && <BarLineChart title="Participaciones Proyectos" data={participacionesProjects} colors={colors} mode={mode} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
-          {patentsSections && <PatentsSwitchChart title="Patente por secciones" data={patentsSections} colors={colors} mode={mode} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
+          {patentsSections && <PatentsSwitchChart title="Patentes por secciones" data={patentsSections} colors={colors} mode={mode} onDataSelected={handleDataSelection} onActiveDotClicked={handleActiveDotClick}/>}
           {patents && <PatentsTable title="Patentes" data={patents} />}
         </div>
       </main>

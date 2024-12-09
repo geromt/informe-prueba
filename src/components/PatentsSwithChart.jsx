@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Bar } from "recharts"
 import { useEffect, useState, useRef } from "react";
 import { Button, Dropdown } from "flowbite-react"
@@ -5,6 +6,28 @@ import { PropTypes } from "prop-types"
 import { chartToSVG, dataToTxt } from "../services/chartsServices";
 import { CustomTooltipPatents } from "./CustomTooltip";
 
+
+const CustomizedDot = ({cx, cy, fill, dataKey, payload, title, onDotClicked}) => {
+  console.log(payload)
+  return (
+    <svg x={cx - 10} y={cy - 10} width={20} height={20}>
+      <circle cx="10" cy="10" r="4" fill={fill} onClick={() => onDotClicked({title: title, timeLapse:"year", time:"0", section:payload.name, dataKey:payload.section, sex:"Ambos", total:payload[dataKey]})} />
+    </svg>
+  );
+};
+
+const getPath = (x, y, width, height) => (
+  `M${x},${y + height}
+   C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3} ${x + width / 2}, ${y}
+   C${x + width / 2},${y + height / 3} ${x + 2 * width / 3},${y + height} ${x + width}, ${y + height}
+   Z`
+);
+
+const CustomizedBar = ({x, y, width, height, fill, dataKey, payload, title, onDotClicked}) => {
+  return (
+      <path d={getPath(x, y, width, height)} stroke="none" fill={fill} onClick={() => onDotClicked({title: title, timeLapse:"year", time:"0", dataKey:payload.section, sex:"Ambos", total:payload[dataKey]})} />
+  );
+};
 
 export function PatentsSwitchChart({title, data, colors, mode, onDataSelected, onActiveDotClicked}){
     PatentsSwitchChart.propTypes = {
@@ -207,7 +230,8 @@ export function PatentsSwitchChart({title, data, colors, mode, onDataSelected, o
                     <PolarGrid />
                     <PolarAngleAxis dataKey="section" tick={renderCustomAxisTick} />
                     <Tooltip content={<CustomTooltipPatents />} />
-                    <Radar name="Secciones" dataKey="val" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+                    <Radar name="Secciones" dataKey="val" stroke="#be123c" fill="#be123c" fillOpacity={0.6} 
+                    activeDot={<CustomizedDot title={title} onDotClicked={onActiveDotClicked}/>}/>
                 </RadarChart>
             }
             {chartType == "Bar" &&
@@ -216,7 +240,7 @@ export function PatentsSwitchChart({title, data, colors, mode, onDataSelected, o
                 <XAxis dataKey="section" tick={renderCustomAxisTick}/>
                 <YAxis />
                 <Tooltip content={<CustomTooltipPatents/>}/>
-                <Bar dataKey="val" fill="#8884d8" />
+                <Bar dataKey="val" fill="#be123c" shape={<CustomizedBar title={title} onDotClicked={onActiveDotClicked}/>} activeBar={<CustomizedBar title={title} onDotClicked={onActiveDotClicked}/>}/>
               </BarChart>
             }
             </ResponsiveContainer>

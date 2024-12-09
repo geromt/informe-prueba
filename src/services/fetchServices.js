@@ -15,7 +15,8 @@ const dataTypeMapping = {"Documentos": "documents",
     "ISBN": "isbn", 
     "Humanindex": "humanindex", 
     "Proyectos": "projects", 
-    "Participaciones Proyectos": "participaciones-projects"}
+    "Participaciones Proyectos": "participaciones-projects",
+    "Patentes por secciones": "patentes-secciones"}
 
 async function fetchData(type, timeLapse, sex=null){
     let response = null
@@ -36,8 +37,8 @@ async function fetchData(type, timeLapse, sex=null){
     return data;
 }
 
+
 export async function fetchDeserializeData(dataType, timeLapse, time, dataKey, page, sex=null, title=null){
-    console.log(title)
     let fetchURL = `${URL_PREFIX}deserialize/${dataTypeMapping[dataType]}/${timeLapse}/${time}/${dataKey}/${page}`
     if (sex != null || title != null){
         fetchURL += `?`
@@ -45,11 +46,9 @@ export async function fetchDeserializeData(dataType, timeLapse, time, dataKey, p
             if (sex == "M" || sex == "F")
                 fetchURL += `sexo=${sex}`
         if (title != null){
-            console.log(title)
             fetchURL += `titulo=${title}`
         }
     }
-    console.log(fetchURL)
 
     const response = await fetch(fetchURL);
 
@@ -57,7 +56,6 @@ export async function fetchDeserializeData(dataType, timeLapse, time, dataKey, p
         throw new Error(`Failed to fetch data: <type: ${dataKey}> <page:${page}>`);
 
     const data = await response.json();
-    console.log(data)
     return data;
 }
 
