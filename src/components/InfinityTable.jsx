@@ -98,7 +98,7 @@ export function InfinityTable({title, timeLapse, time, dataKey, sex, total}){
           return(
             <Table.Row className="border-y-blue-300 border-y-2 dark:border-0" key={index}>
               <Table.Cell className="text-blue-800 dark:text-blue-300">{index + 1}</Table.Cell>
-              <Table.Cell className="text-white-text dark:text-dark-secondary"><a href={accesoElectronico}>{titulo}</a></Table.Cell>
+              <Table.Cell className="text-white-text dark:text-dark-secondary">{accesoElectronico?<a href={accesoElectronico}>{titulo}</a>:titulo}</Table.Cell>
               <Table.Cell className="text-white-text dark:text-dark-secondary">{revistaTitulo}</Table.Cell>
               <Table.Cell className="text-white-text dark:text-dark-secondary">{revistaEditorial}</Table.Cell>
               <Table.Cell className="text-white-text dark:text-dark-secondary">{fecha.toLocaleDateString()}</Table.Cell>
@@ -136,7 +136,7 @@ export function InfinityTable({title, timeLapse, time, dataKey, sex, total}){
           return(
             <Table.Row className="border-y-blue-300 border-y-2 dark:border-0" key={index}>
               <Table.Cell className="text-blue-800 dark:text-blue-300">{index + 1}</Table.Cell>
-              <Table.Cell className="text-white-text dark:text-dark-secondary"><a href={accesoElectronico}>{titulo}</a></Table.Cell>
+              <Table.Cell className="text-white-text dark:text-dark-secondary">{accesoElectronico?<a href={accesoElectronico}>{titulo}</a>:titulo}</Table.Cell>
               <Table.Cell className="text-white-text dark:text-dark-secondary">{obraEditorial}</Table.Cell>
               <Table.Cell className="text-white-text dark:text-dark-secondary">{obraTitulo}</Table.Cell>
               <Table.Cell className="text-white-text dark:text-dark-secondary">{fecha.toLocaleDateString()}</Table.Cell>
